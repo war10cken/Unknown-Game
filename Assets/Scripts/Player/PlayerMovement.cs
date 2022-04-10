@@ -20,20 +20,19 @@ namespace Player
             float _Xaxis = Input.GetAxis("Horizontal");
             float _Yaxis = Input.GetAxis("Vertical");
 
-            if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, _MaxRayDistance))
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, _MaxRayDistance))
             {
                 if (Input.GetButtonDown("Jump"))
                 {
                     //player jump
                     Player_Rigidbody.AddForce((Vector3.up + transform.forward * _Yaxis + Vector3.right * _Xaxis) * _JumpForce);
                 }
-                
                 //Vector movement
-                Vector3 _MoveDirection = new Vector3(_Xaxis / 10f, 0, _Yaxis / 10f);
+                Vector3 _MoveDirection = new Vector3(_Xaxis, 0, _Yaxis);
                 //Standard movement
-                transform.position += _MoveDirection * _PlayerSpeed;
+                transform.position += _MoveDirection.normalized * _PlayerSpeed;
                 //Movement with physics
-                // Player_Rigidbody.AddForce(_MoveDirection.normalized * _PlayerSpeed, ForceMode.Force);
+                //Player_Rigidbody.AddForce(_MoveDirection.normalized * _PlayerSpeed, ForceMode.Force);
 
                 if (_MoveDirection != Vector3.zero)
                 {
@@ -45,7 +44,5 @@ namespace Player
             }
         }
     }
-}
 
-//public float _PlayerRot = 0f;
-//transform.right = Vector3.Slerp(transform.right, _MoveDirection, _RotSpeed);
+}

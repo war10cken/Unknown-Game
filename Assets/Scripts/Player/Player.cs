@@ -10,25 +10,23 @@ namespace Player
         public Text HPtext;
         public Text Staminatext;
         public Text GAMEOVER;
-
-        private void FixedUpdate()
+        void FixedUpdate()
         {
             HPtext.text = "HP " + HP;
             Staminatext.text = "Stamina " + STAMINA;
         }
-
-        private void OnCollisionStay(Collision collisionInfo) 
+        void OnCollisionStay(Collision collisioninfo)
         {
-            if (collisionInfo.impulse.sqrMagnitude > 1 && collisionInfo.gameObject.GetComponent<Rigidbody>() && HP >= 0) 
+            if (collisioninfo.impulse.sqrMagnitude > 1 && collisioninfo.gameObject.GetComponent<Rigidbody>() && HP >= 0)
             {
-                HP -= (int)(collisionInfo.impulse.sqrMagnitude / collisionInfo.gameObject.GetComponent<Rigidbody>().mass);
+                HP -= (int)(collisioninfo.impulse.sqrMagnitude / collisioninfo.gameObject.GetComponent<Rigidbody>().mass);
             }
-        
-            if (HP < 0)
+            else if (HP < 0)
             {
                 HP = 0;
-                GAMEOVER.gameObject.SetActive(true);
+                GAMEOVER.enabled = true;
             }
         }
     }
+
 }
