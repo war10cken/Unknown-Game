@@ -7,7 +7,7 @@ namespace Guns.PhysicalGun
 {
     public class PhysicalGun : Gun
     {
-        [SerializeField] private TMP_Text _forcePowerText;
+        //[SerializeField] private TMP_Text _forcePowerText;
         
         private float _forcePower;
         private bool _lockTarget;
