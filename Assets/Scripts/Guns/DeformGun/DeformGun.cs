@@ -22,18 +22,18 @@ public class DeformGun : MonoBehaviour
     public float _LaserSpeedRot = 5f;
     [Header("Player")]
     public GameObject _Player;
-    public Player.Player _ClassPlayer;
     [Header("Speeds")]
     public float _PlayerTrackingSpeed = 0.2f;
     public float _DeformGunTrackingSpeed = 0.2f;
     public float _DeformGunPositionTrackingSpeed = 0.2f;
-
-
+    [Header("Particles")]
+    public ParticleSystem _Particles;
+    private ParticleSystem _instantiatedParticle;
     void FixedUpdate()
     {
         Ray ray = new(_LineRendererMark.transform.position, _LineRendererMark.transform.forward);
         Ray ray2 = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-        
+
 
         GunPosRot();
         DeformGunTracking();
@@ -46,13 +46,23 @@ public class DeformGun : MonoBehaviour
             ShowLaser();
             Deformation(ray);
             AddforceToObject(ray);
+            Particles(hit);
         }
+    }
+    void Particles(RaycastHit hit)
+    {
+        _instantiatedParticle = Instantiate(_Particles, hit.point, Quaternion.identity);
+
+        _instantiatedParticle.gameObject.SetActive(true);
+
+        Destroy(_instantiatedParticle.gameObject, _BeamDissapeareTime * 3);
+        Debug.Log("Destructed");
     }
     void GunPosRot()
     {
         Vector3 targetPos = _Player.transform.TransformPoint(_offset);
         _LaserModel.transform.position = Vector3.MoveTowards(_LaserModel.transform.position, targetPos, _DeformGunPositionTrackingSpeed);
-        if(hit.point == Vector3.zero)
+        if (hit.point == Vector3.zero)
         {
             _LaserModel.transform.rotation = Quaternion.RotateTowards(_LaserModel.transform.rotation, _Player.transform.rotation, _LaserSpeedRot);
         }
@@ -68,7 +78,7 @@ public class DeformGun : MonoBehaviour
     void PlayerTracking(Ray ray2)
     {
         Vector3 _target;
-        if (Physics.Raycast(ray2.origin,ray2.direction * _LaserLenght,out hit2))
+        if (Physics.Raycast(ray2.origin, ray2.direction * _LaserLenght, out hit2))
         {
             _target = (hit2.point - _Player.transform.position);
             _target = new Vector3(_target.x, 0, _target.z);
@@ -80,7 +90,7 @@ public class DeformGun : MonoBehaviour
     void ShowLaser()
     {
         LineRenderer _GunBeam;
-         
+
         GameObject _beam = new GameObject("Beam");
         _beam.AddComponent<LineRenderer>();
         _GunBeam = _beam.GetComponent<LineRenderer>();
@@ -96,7 +106,7 @@ public class DeformGun : MonoBehaviour
 
         Destroy(_beam, _BeamDissapeareTime);
     }
-    void AddforceToObject(Ray ray) 
+    void AddforceToObject(Ray ray)
     {
         //Получаем доступ к rigidbody объекта
         Rigidbody _DeformRigidbody = hit.collider.gameObject.GetComponent<Rigidbody>();
@@ -108,48 +118,26 @@ public class DeformGun : MonoBehaviour
         Mesh _deformingMesh = hit.collider.gameObject.GetComponent<MeshFilter>().mesh;
 
         GameObject _GameObjectDeformingMesh = hit.collider.gameObject;
-        
 
         //копируем все вершины меша.
-        Vector3[] _MeshVertices = _deformingMesh.vertices; 
+        Vector3[] _MeshVertices = _deformingMesh.vertices;
         //
         Vector3 _HitPointLocalCoor = _GameObjectDeformingMesh.transform.InverseTransformPoint(hit.point);
 
         for (int i = 0; i < _MeshVertices.Length; i++)
         {
-            float _Distance = (float)Vector3.Distance(_HitPointLocalCoor,_MeshVertices[i]);
-            if(_RadiusDeform > _Distance)
+            float _Distance = (float)Vector3.Distance(_HitPointLocalCoor, _MeshVertices[i]);
+            if (_RadiusDeform > _Distance)
             {
                 _MeshVertices[i] += ray.direction.normalized * _forceDeform;
             }
-            Debug.DrawRay(ray.origin, hit.point, Color.green,duration);
         }
 
         _deformingMesh.vertices = _MeshVertices;
         _deformingMesh.RecalculateBounds();
         //_deformingMesh.RecalculateNormals();
-        
+
         //Destroy(_GameObjectDeformingMesh.GetComponent<MeshCollider>());
         //_GameObjectDeformingMesh.AddComponent<MeshCollider>().convex = true;
     }
 }
-//Ray ray = new Ray(_LineRendererMark.transform.position, _LineRendererMark.transform.right);
-
-/*
-Vector3 _mousePos = Input.mousePosition;
-//Поворот камеры за пушкой
-transform.rotation = Quaternion.Slerp(transform.rotation, _LaserModel.transform.rotation,0.1f);
-
-_LaserModel.transform.rotation = Quaternion.Slerp(_LaserModel.transform.rotation, transform.rotation, 0.1f);
-*/
-
-/*
-_LaserModel.transform.LookAt(hit.point);
-_LaserModel.transform.LookAt(ray.GetPoint(_MaxDistanceCollision));
-*/
-
-//_Player.transform.LookAt(hit.collider.transform);
-
-//_MeshVertices[i] -= hit.normal.normalized * _forceDeform;
-
-//_DeformRigidbody.AddForce((ray.direction + _DeformRigidbody.transform.up) * _Addforce);
