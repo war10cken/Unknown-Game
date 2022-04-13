@@ -1,7 +1,7 @@
 
 namespace Enemy
 {
-    public class CommonBaseEnemy : BaseEnemy
+    public class CommonEnemy : BaseEnemy
     {
     
     }

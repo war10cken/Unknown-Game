@@ -7,7 +7,7 @@ public class GameSystem : MonoBehaviour
     private void Start()
     {
         Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
+        // Cursor.lockState = CursorLockMode.Confined;
 
         Application.targetFrameRate = 60;
     }

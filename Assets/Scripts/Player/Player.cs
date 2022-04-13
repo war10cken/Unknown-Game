@@ -12,21 +12,21 @@ namespace Player
         public Text GAMEOVER;
         void FixedUpdate()
         {
-            HPtext.text = "HP " + HP;
-            Staminatext.text = "Stamina " + STAMINA;
+            // HPtext.text = "HP " + HP;
+            // Staminatext.text = "Stamina " + STAMINA;
         }
-        void OnCollisionStay(Collision collisioninfo)
-        {
-            if (collisioninfo.impulse.sqrMagnitude > 1 && collisioninfo.gameObject.GetComponent<Rigidbody>() && HP >= 0)
-            {
-                HP -= (int)(collisioninfo.impulse.sqrMagnitude / collisioninfo.gameObject.GetComponent<Rigidbody>().mass);
-            }
-            else if (HP < 0)
-            {
-                HP = 0;
-                GAMEOVER.enabled = true;
-            }
-        }
+        // void OnCollisionStay(Collision collisioninfo)
+        // {
+        //     if (collisioninfo.impulse.sqrMagnitude > 1 && collisioninfo.gameObject.GetComponent<Rigidbody>() && HP >= 0)
+        //     {
+        //         HP -= (int)(collisioninfo.impulse.sqrMagnitude / collisioninfo.gameObject.GetComponent<Rigidbody>().mass);
+        //     }
+        //     else if (HP < 0)
+        //     {
+        //         HP = 0;
+        //         GAMEOVER.enabled = true;
+        //     }
+        // }
     }
 
 }

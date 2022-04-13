@@ -1,22 +1,21 @@
-using System;
 using UnityEngine;
 
 namespace Enemy
 {
     public abstract class BaseEnemy : MonoBehaviour
     {
-        [SerializeField] private float _hp;
+        [SerializeField] protected float Hp;
 
         public virtual void TakeDamage(float damage)
         {
-            _hp -= damage;
+            Hp -= damage;
         }
 
         private void Update()
         {
-            if (_hp <= 0)
+            if (Hp <= 0)
             {
-                _hp = 0;
+                Hp = 0;
                 Destroy(gameObject);
             }
         }

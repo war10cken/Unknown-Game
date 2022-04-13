@@ -5,7 +5,7 @@ using UnityEngine;
 
 #endregion
 
-namespace Utilities
+namespace Guns
 {
     [RequireComponent(typeof(Rigidbody))]
     public class Selectable : MonoBehaviour
@@ -30,7 +30,6 @@ namespace Utilities
                 if (_rigidbody.mass > other.rigidbody.mass)
                 {
                     Destroy(other.gameObject);
-                    Debug.Log("I am DIE!");
                 }
             }
         }

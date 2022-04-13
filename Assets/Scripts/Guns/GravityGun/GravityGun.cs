@@ -1,5 +1,4 @@
 using UnityEngine;
-using Utilities;
 
 namespace Guns.GravityGun
 {
