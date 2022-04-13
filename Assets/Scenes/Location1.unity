@@ -6035,6 +6035,7 @@ GameObject:
   - component: {fileID: 963194234}
   - component: {fileID: 963194230}
   - component: {fileID: 963194235}
+  - component: {fileID: 963194237}
   - component: {fileID: 963194233}
   - component: {fileID: 963194236}
   m_Layer: 0
@@ -6279,6 +6280,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Player: {fileID: 426605417}
+--- !u!114 &963194237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c78c30869d36664fb11dbcdae6b8714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LaserLenght: 100
+  _Player: {fileID: 426605417}
+  _PlayerTrackingSpeed: 0.2
 --- !u!1 &983350838 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
