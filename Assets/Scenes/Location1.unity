@@ -293,7 +293,7 @@ RectTransform:
   - {fileID: 750574033}
   - {fileID: 2018973191}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -630,7 +630,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 739747297}
-  - {fileID: 983350841}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -5522,7 +5521,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &629830927 stripped
 GameObject:
@@ -5962,31 +5961,31 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 426605423}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.6560001
+      value: -1.0200003
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.45251074
+      value: 0.045021474
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.02
+      value: -2.6560001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalRotation.x
@@ -5994,7 +5993,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalRotation.z
@@ -6034,10 +6033,12 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194234}
   - component: {fileID: 963194230}
-  - component: {fileID: 963194235}
   - component: {fileID: 963194237}
-  - component: {fileID: 963194233}
+  - component: {fileID: 963194238}
+  - component: {fileID: 963194239}
   - component: {fileID: 963194236}
+  - component: {fileID: 963194233}
+  - component: {fileID: 963194235}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6224,23 +6225,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58c56d4737ada8140a09f36aa6658d0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Player: {fileID: 426605417}
+  _LaserModel: {fileID: 983350838}
   _LaserLenght: 100
   _MaxDistanceCollision: 1000
   duration: 5
-  _LineRendererMark: {fileID: 1765471758}
+  _RayOriginMark: {fileID: 1765471758}
   _Material: {fileID: 2100000, guid: 05a865fa918c5b64693f6178920e25b0, type: 2}
   _BeamDissapeareTime: 0.1
   _forceDeform: 0.1
   _RadiusDeform: 0.5
   _Addforce: 1500
-  _LaserModel: {fileID: 983350838}
-  _offset: {x: 1.5, y: 0, z: 0}
-  _LaserSpeedRot: 5
-  _Player: {fileID: 426605417}
   _PlayerTrackingSpeed: 0.05
   _DeformGunTrackingSpeed: 0.2
   _DeformGunPositionTrackingSpeed: 0.4
+  _LaserSpeedRot: 5
   _Particles: {fileID: 557493306}
+  _offset: {x: 1.5, y: 0, z: 0}
 --- !u!114 &963194234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6295,6 +6296,41 @@ MonoBehaviour:
   _LaserLenght: 100
   _Player: {fileID: 426605417}
   _PlayerTrackingSpeed: 0.2
+--- !u!114 &963194238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329feb79c0edfbf4aaeb70c8d917efd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LaserLenght: 100
+  _LaserModel: {fileID: 983350838}
+  _DeformGunTrackingSpeed: 0.2
+--- !u!114 &963194239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f4a3aff2f3a7a84bb3cf2639c0ae9fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Player: {fileID: 426605417}
+  _LaserModel: {fileID: 983350838}
+  _RayOriginMark: {fileID: 1765471758}
+  _offset: {x: 1, y: 0, z: 0}
+  _LaserLenght: 100
+  _MaxDistanceCollision: 100
+  _DeformGunPositionTrackingSpeed: 0.2
+  _LaserSpeedRot: 5
 --- !u!1 &983350838 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
@@ -6735,7 +6771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1765471759}
   m_Layer: 0
-  m_Name: Mark
+  m_Name: RayMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
