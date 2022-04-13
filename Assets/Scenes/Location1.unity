@@ -5565,7 +5565,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629830927}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e6e59317880ff246acb29b1615cea54, type: 3}
   m_Name: 
@@ -6030,11 +6030,13 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194232}
   - component: {fileID: 963194231}
-  - component: {fileID: 963194226}
   - component: {fileID: 963194229}
-  - component: {fileID: 963194230}
-  - component: {fileID: 963194233}
+  - component: {fileID: 963194226}
   - component: {fileID: 963194234}
+  - component: {fileID: 963194230}
+  - component: {fileID: 963194235}
+  - component: {fileID: 963194233}
+  - component: {fileID: 963194236}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6251,6 +6253,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FPS: {fileID: 1503906170}
+--- !u!114 &963194235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5202f78ced27a5447a59be87eb316d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ColorSpeed: 0.05
+--- !u!114 &963194236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68309fda1de67d845820a85f502f80ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Player: {fileID: 426605417}
 --- !u!1 &983350838 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
@@ -6951,6 +6979,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: b97b627fea277a74b9ac49de64310ab6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d0aeba77b392d334b8167506c67c6a60, type: 2}
     - target: {fileID: 919132149155446097, guid: b97b627fea277a74b9ac49de64310ab6, type: 3}
       propertyPath: m_Name
       value: Enemy
@@ -7083,7 +7115,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1068933752687391981, guid: b23df83bcedea7e449ebcb1abd38eec4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.44
+      value: 3.91
       objectReference: {fileID: 0}
     - target: {fileID: 1068933752687391981, guid: b23df83bcedea7e449ebcb1abd38eec4, type: 3}
       propertyPath: m_LocalRotation.w

@@ -36,7 +36,7 @@ namespace Guns
                 
                     Debug.DrawRay(transform.position, targetDirection, Color.red, 0.01f);
 
-                    transform.LookAt(Hit.point);
+                    //transform.LookAt(Hit.point);
 
                     if (Hit.collider.gameObject.TryGetComponent(out Selectable item))
                     {
