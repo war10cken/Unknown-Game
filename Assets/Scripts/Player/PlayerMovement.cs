@@ -19,8 +19,7 @@ namespace Player
             float _Xaxis = Input.GetAxis("Horizontal");
             float _Zaxis = Input.GetAxis("Vertical");
 
-            //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, _MaxRayDistance))
-
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, _MaxRayDistance))
             {
                 Vector3 _MoveDirection = new(_Xaxis, 0, _Zaxis);
                 if (Input.GetButtonDown("Jump"))
@@ -40,6 +39,7 @@ namespace Player
     }
 }
 
+//if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, _MaxRayDistance))
 //public float _RotSpeed = 0.2f;
 //Player_Rigidbody.AddForce((Vector3.up + transform.forward * _Yaxis + Vector3.right * _Xaxis) * _JumpForce);
 //transform.position += transform.forward.normalized * _PlayerSpeed * _Yaxis + transform.right.normalized * _PlayerSpeed * _Xaxis;
