@@ -22,7 +22,7 @@ namespace Guns.PhysicalGun
                 ItemRigidbody.AddForce(transform.forward * _forcePower, ForceMode.Force);
                 Energy.value -= _forcePower / 1000;
             
-                Selectable.SetForcePower(_forcePower / 50, item);
+                Selectable.SetDamage(_forcePower / 50, item);
                 
                 _forcePower = 0;
             }

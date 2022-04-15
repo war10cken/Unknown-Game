@@ -73,12 +73,10 @@ namespace Guns
                             }
                         }
 
-                        if (item)
-                        {
-                            item.transform.parent.Translate(Input.GetAxisRaw("Mouse X") / 2f / ItemRigidbody.mass,
-                                                            Input.GetAxisRaw("Mouse Y") / 2f / ItemRigidbody.mass, 
-                                                            Input.GetAxisRaw("Mouse ScrollWheel") * 5f / ItemRigidbody.mass);
-                        }
+                        item.transform.parent.Translate(Input.GetAxisRaw("Mouse X") / 2f / ItemRigidbody.mass,
+                                                        Input.GetAxisRaw("Mouse Y") / 2f / ItemRigidbody.mass, 
+                                                        Input.GetAxisRaw("Mouse ScrollWheel") * 5f / ItemRigidbody.mass);
+                        
                         
                         _item = item;
                     }

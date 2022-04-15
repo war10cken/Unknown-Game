@@ -11,7 +11,7 @@ namespace Guns
     public class Selectable : MonoBehaviour
     {
         private Rigidbody _rigidbody;
-        private float _forcePower;
+        private float _damage;
 
         private void Start()
         {
@@ -24,7 +24,7 @@ namespace Guns
             {
                 if (other.gameObject.TryGetComponent(out BaseEnemy enemy))
                 {
-                    enemy.TakeDamage(_forcePower);
+                    enemy.TakeDamage(_damage);
                 }
                 
                 if (_rigidbody.mass > other.rigidbody.mass)
@@ -34,9 +34,9 @@ namespace Guns
             }
         }
 
-        public static void SetForcePower(float value, Selectable item)
+        public static void SetDamage(float value, Selectable item)
         {
-            item._forcePower = value;
+            item._damage = value;
         }
     }
 }
