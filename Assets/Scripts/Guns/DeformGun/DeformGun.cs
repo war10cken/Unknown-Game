@@ -2,42 +2,35 @@ using UnityEngine;
 
 public class DeformGun : MonoBehaviour
 {
+    [Header("3DModels")]
+    public GameObject _Player;
+    public GameObject _LaserModel;
     [Header("Raycast")]
     public float _LaserLenght = 100;
     public float _MaxDistanceCollision = 100;
     RaycastHit hit;
-    RaycastHit hit2;
     [Header("ShowingRay")]
     public float duration = 5f;
-    public GameObject _LineRendererMark;
+    public GameObject _RayOriginMark;
     public Material _Material;
     public float _BeamDissapeareTime = 0.2f;
     [Header("Deformation")]
     public float _forceDeform = 0.1f;
     public float _RadiusDeform = 1f;
     public float _Addforce = 5f;
-    [Header("3DModels")]
-    public GameObject _LaserModel;
-    public Vector3 _offset;
-    public float _LaserSpeedRot = 5f;
-    [Header("Player")]
-    public GameObject _Player;
-    [Header("Speeds")]
+    [Header("Velocities")]
     public float _PlayerTrackingSpeed = 0.2f;
     public float _DeformGunTrackingSpeed = 0.2f;
     public float _DeformGunPositionTrackingSpeed = 0.2f;
+    public float _LaserSpeedRot = 5f;
     [Header("Particles")]
     public ParticleSystem _Particles;
     private ParticleSystem _instantiatedParticle;
+    [Header("Vectors")]
+    public Vector3 _offset = new(1, 0, 0);
     void FixedUpdate()
     {
-        Ray ray = new(_LineRendererMark.transform.position, _LineRendererMark.transform.forward);
-        Ray ray2 = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-
-
-        GunPosRot();
-        DeformGunTracking();
-        PlayerTracking(ray2);
+        Ray ray = new(_RayOriginMark.transform.position, _RayOriginMark.transform.forward);
 
         Debug.DrawRay(ray.origin, ray.direction * _LaserLenght, Color.red);
 
@@ -56,42 +49,13 @@ public class DeformGun : MonoBehaviour
         _instantiatedParticle.gameObject.SetActive(true);
 
         Destroy(_instantiatedParticle.gameObject, _BeamDissapeareTime * 3);
-        Debug.Log("Destructed");
     }
-    void GunPosRot()
-    {
-        Vector3 targetPos = _Player.transform.TransformPoint(_offset);
-        _LaserModel.transform.position = Vector3.MoveTowards(_LaserModel.transform.position, targetPos, _DeformGunPositionTrackingSpeed);
-        if (hit.point == Vector3.zero)
-        {
-            _LaserModel.transform.rotation = Quaternion.RotateTowards(_LaserModel.transform.rotation, _Player.transform.rotation, _LaserSpeedRot);
-        }
-    }
-    void DeformGunTracking()
-    {
-        Vector3 _Dir = (hit2.point - _LaserModel.transform.position).normalized;
-        Quaternion _lookRotation = Quaternion.LookRotation(_Dir);
-        _LaserModel.transform.rotation = Quaternion.Slerp(_LaserModel.transform.rotation, _lookRotation, _DeformGunTrackingSpeed);
-
-        Debug.DrawRay(_LaserModel.transform.position, _Dir, Color.blue);
-    }
-    void PlayerTracking(Ray ray2)
-    {
-        Vector3 _target;
-        if (Physics.Raycast(ray2.origin, ray2.direction * _LaserLenght, out hit2))
-        {
-            _target = (hit2.point - _Player.transform.position);
-            _target = new Vector3(_target.x, 0, _target.z);
-            _Player.transform.forward = Vector3.Slerp(_Player.transform.forward, _target, _PlayerTrackingSpeed);
-        }
-        Debug.DrawRay(ray2.origin, ray2.direction * _LaserLenght, Color.cyan);
-    }
-
+   
     void ShowLaser()
     {
         LineRenderer _GunBeam;
 
-        GameObject _beam = new GameObject("Beam");
+        GameObject _beam = new ("Beam");
         _beam.AddComponent<LineRenderer>();
         _GunBeam = _beam.GetComponent<LineRenderer>();
         _GunBeam.material = _Material;
@@ -101,7 +65,7 @@ public class DeformGun : MonoBehaviour
 
         _GunBeam.useWorldSpace = true;
 
-        _GunBeam.SetPosition(0, _LineRendererMark.transform.position);
+        _GunBeam.SetPosition(0, _RayOriginMark.transform.position);
         _GunBeam.SetPosition(1, hit.point);
 
         Destroy(_beam, _BeamDissapeareTime);
