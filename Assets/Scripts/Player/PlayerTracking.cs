@@ -4,30 +4,30 @@ using UnityEngine;
 
 public class PlayerTracking : MonoBehaviour
 {
-    [Header("Raycast")]
-    public float _LaserLenght = 100;
-    RaycastHit hit;
     [Header("Player")]
-    public GameObject _Player;
+    public GameObject Player;
+    [Header("Raycast")]
+    public float LaserLenght = 100;
+    RaycastHit hit;
     [Header("Velocities")]
-    public float _PlayerTrackingSpeed = 0.2f;
-    public void FixedUpdate()
+    public float PlayerTrackingSpeed = 0.2f;
+    void FixedUpdate()
     {
         Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
 
-        Vector3 _target;
-        if (Physics.Raycast(ray.origin, ray.direction * _LaserLenght, out hit))
+        Vector3 target;
+        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit))
         {
-            _target = (hit.point - _Player.transform.position);
-            _target = new Vector3(_target.x, 0, _target.z);
-            _Player.transform.forward = Vector3.Slerp(_Player.transform.forward, _target, _PlayerTrackingSpeed);
+            target = (hit.point - Player.transform.position);
+            target = new Vector3(target.x, 0, target.z);
+            Player.transform.forward = Vector3.Slerp(Player.transform.forward, target, PlayerTrackingSpeed);
         }
         else
         {
-            _target = ray.direction;
-            _target = new Vector3(_target.x, 0, _target.z);
-            _Player.transform.forward = Vector3.Slerp(_Player.transform.forward, _target, _PlayerTrackingSpeed);
+            target = ray.direction;
+            target = new Vector3(target.x, 0, target.z);
+            Player.transform.forward = Vector3.Slerp(Player.transform.forward, target, PlayerTrackingSpeed);
         }
-        Debug.DrawRay(ray.origin, ray.direction * _LaserLenght, Color.cyan);
+        Debug.DrawRay(ray.origin, ray.direction * LaserLenght, Color.cyan);
     }
 }

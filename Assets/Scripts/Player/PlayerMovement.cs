@@ -1,40 +1,34 @@
 using UnityEngine;
-
-namespace Player
+public class PlayerMovement : MonoBehaviour
 {
-    public class PlayerMovement : MonoBehaviour
+    public float PlayerSpeed = 5f;
+    public float JumpForce = 1500f;
+    public float MaxRayDistance = 1f;
+    Rigidbody PlayerRigidbody;
+    void Start()
     {
-        public float _PlayerSpeed = 5f;
-        public float _JumpForce = 1500f;
-        public float _MaxRayDistance = 1f;
-        Rigidbody Player_Rigidbody;
-        RaycastHit hit;
-        void Start()
-        {
-            Player_Rigidbody = GetComponent<Rigidbody>();
-        }
+        PlayerRigidbody = GetComponent<Rigidbody>();
+    }
+    void FixedUpdate()
+    {
+        float HorizontalAxis = Input.GetAxis("Horizontal");
+        float VerticalAxis = Input.GetAxis("Vertical");
 
-        void FixedUpdate()
+        if (Physics.Raycast(transform.position, Vector3.down, MaxRayDistance))
         {
-            float _Xaxis = Input.GetAxis("Horizontal");
-            float _Zaxis = Input.GetAxis("Vertical");
-
-            if (Physics.Raycast(transform.position, Vector3.down, out hit, _MaxRayDistance))
+            Vector3 CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
+            if (Input.GetButtonDown("Jump"))
             {
-                Vector3 _MoveDirection = new(_Xaxis, 0, _Zaxis);
-                if (Input.GetButtonDown("Jump"))
-                {
-                    //player jump
-                    Player_Rigidbody.AddForce((Vector3.up + _MoveDirection.normalized) * _JumpForce);
-                }
-                //Standard movement
-                transform.position += _MoveDirection.normalized * _PlayerSpeed;
-
-                //направление движения пользователя
-                Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
-                //Луч проверки пользователя на прыжок
-                Debug.DrawRay(transform.position, Vector3.down * _MaxRayDistance, Color.red);
+                //Player's jump
+                PlayerRigidbody.AddForce((Vector3.up + CharacterMoveDirection).normalized * JumpForce);
             }
+            //Standard movement
+            transform.position += PlayerSpeed * CharacterMoveDirection.normalized;
+
+            //направление движения пользователя
+            Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
+            //Луч проверки пользователя на прыжок
+            Debug.DrawRay(transform.position, Vector3.down * MaxRayDistance, Color.red);
         }
     }
 }
