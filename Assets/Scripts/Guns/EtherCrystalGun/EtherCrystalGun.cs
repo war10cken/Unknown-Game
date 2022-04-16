@@ -14,7 +14,7 @@ public class EtherCrystalGun : MonoBehaviour
     GameObject obj;
     void FixedUpdate()
     {
-        Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray.origin, ray.direction, out hit) && hit.collider.gameObject.layer == 6 && Input.GetButton("Fire1"))
         {
             //
