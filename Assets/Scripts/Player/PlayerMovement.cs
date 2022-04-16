@@ -17,17 +17,16 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.down, MaxRayDistance))
         {
             Vector3 CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
+            // Векторное движение.
+            transform.position +=  CharacterMoveDirection.normalized * PlayerSpeed;
             if (Input.GetButtonDown("Jump"))
             {
                 //Player's jump
                 PlayerRigidbody.AddForce((Vector3.up + CharacterMoveDirection).normalized * JumpForce);
             }
-            //Standard movement
-            transform.position += PlayerSpeed * CharacterMoveDirection.normalized;
-
-            //направление движения пользователя
+            // Направление движения пользователя
             Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
-            //Луч проверки пользователя на прыжок
+            // Луч проверки пользователя на прыжок
             Debug.DrawRay(transform.position, Vector3.down * MaxRayDistance, Color.red);
         }
     }
