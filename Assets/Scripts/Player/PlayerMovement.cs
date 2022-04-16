@@ -2,45 +2,48 @@ using UnityEngine;
 
 namespace Player
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class PlayerMovement : MonoBehaviour
     {
-        public float _PlayerSpeed = 5f;
-        public float _JumpForce = 1500f;
-        public float _MaxRayDistance = 1f;
-        public float _RotSpeed = 0.2f;
-        Rigidbody Player_Rigidbody;
-        RaycastHit hit;
-        void Start()
+        public float PlayerSpeed = 5f;
+        public float JumpForce = 1500f;
+        public float MaxRayDistance = 1f;
+
+        private Rigidbody _rigidbody;
+        private RaycastHit _hit;
+
+        private void Start()
         {
-            Player_Rigidbody = GetComponent<Rigidbody>();
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
-            float _Xaxis = Input.GetAxis("Horizontal");
-            float _Yaxis = Input.GetAxis("Vertical");
+            float xAxis = Input.GetAxis("Horizontal");
+            float yAxis = Input.GetAxis("Vertical");
 
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, _MaxRayDistance))
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out _hit, MaxRayDistance))
             {
                 if (Input.GetButtonDown("Jump"))
                 {
                     //player jump
-                    Player_Rigidbody.AddForce((Vector3.up + transform.forward * _Yaxis + Vector3.right * _Xaxis) * _JumpForce);
+                    _rigidbody.AddForce((Vector3.up + transform.forward * yAxis + Vector3.right * xAxis) * JumpForce);
                 }
                 //Vector movement
-                Vector3 _MoveDirection = new Vector3(_Xaxis, 0, _Yaxis);
+                Vector3 moveDirection = new Vector3(xAxis, 0, yAxis);
                 //Standard movement
-                transform.position += _MoveDirection.normalized * _PlayerSpeed;
+                transform.position += moveDirection.normalized * PlayerSpeed;
                 //Movement with physics
                 //Player_Rigidbody.AddForce(_MoveDirection.normalized * _PlayerSpeed, ForceMode.Force);
 
-                if (_MoveDirection != Vector3.zero)
+                if (moveDirection != Vector3.zero)
                 {
                     //rotation
                     //transform.forward = Vector3.Slerp(transform.forward, _MoveDirection, _RotSpeed);
                 }
+                
                 Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
-                Debug.DrawRay(transform.position, Vector3.down * _MaxRayDistance, Color.red);
+                Debug.DrawRay(transform.position, Vector3.down * MaxRayDistance, Color.red);
             }
         }
     }

@@ -1,6 +1,6 @@
 #region
 
-using Enemy;
+using Enemies;
 using UnityEngine;
 
 #endregion
@@ -22,7 +22,7 @@ namespace Guns
         {
             if (other.rigidbody is not null)
             {
-                if (other.gameObject.TryGetComponent(out BaseEnemy enemy))
+                if (other.gameObject.TryGetComponent(out Enemy enemy))
                 {
                     enemy.TakeDamage(_damage);
                 }
