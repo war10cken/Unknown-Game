@@ -3,7 +3,7 @@ using UnityEngine;
 public class DeformGun : MonoBehaviour
 {
     [Header("3DModels")]
-    public Player.Player Player;
+    public GameObject Player;
     public GameObject LaserModel;
     
     [Header("Raycast")]
