@@ -6,15 +6,13 @@ namespace Guns.PhysicalGun
 {
     public class PhysicalGun : Gun
     {
-        // [SerializeField] private TMP_Text _forcePowerText;
+        //[SerializeField] private TMP_Text _forcePowerText;
         
         private float _forcePower;
-        private bool _lockTarget;
-        private Selectable _item;
     
         private void FixedUpdate()
         {
-            _item = GrabItem();
+            var item = GrabItem();
             
             if (Input.GetKey(KeyCode.Q))
             {
@@ -28,7 +26,7 @@ namespace Guns.PhysicalGun
                 ItemRigidbody.AddForce(transform.forward * _forcePower, ForceMode.Force);
                 Energy.value -= _forcePower / 1000;
             
-                Selectable.SetForcePower(_forcePower / 50, _item);
+                Selectable.SetForcePower(_forcePower / 50, item);
                 
                 _forcePower = 0;
                 // _forcePowerText.text = "Force Power - 0";
