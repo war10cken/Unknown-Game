@@ -7,7 +7,7 @@ public class GameSystem : MonoBehaviour
     private void Start()
     {
         Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
+        //Cursor.lockState = CursorLockMode.Confined;
 
         Application.targetFrameRate = 60;
     }
@@ -15,5 +15,9 @@ public class GameSystem : MonoBehaviour
     private void Update()
     {
         FPS.text = "FPS " + (int)(1.0f / Time.smoothDeltaTime);
+        if (Input.GetButtonDown("Cancel"))
+        {
+            Application.Quit();
+        }
     }
 }
