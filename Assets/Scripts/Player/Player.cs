@@ -1,3 +1,4 @@
+using Enemies;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,26 +6,39 @@ namespace Player
 {
     public class Player : MonoBehaviour
     {
-        int HP = 100;
-        int STAMINA = 100;
-        public Text HPtext;
-        public Text Staminatext;
-        public Text GAMEOVER;
-        void FixedUpdate()
+        [SerializeField] private Slider _health;
+
+        [SerializeField] private Canvas _ui;
+        [SerializeField] private Canvas _gameOverScreen;
+
+        public void TakeDamage(float damage)
         {
-            HPtext.text = "HP " + HP;
-            Staminatext.text = "Stamina " + STAMINA;
+            _health.value -= damage / 1000f;
         }
-        void OnCollisionStay(Collision collisioninfo)
+
+        private void OnCollisionEnter(Collision other)
         {
-            if (collisioninfo.impulse.sqrMagnitude > 1 && collisioninfo.gameObject.GetComponent<Rigidbody>() && HP >= 0)
+            if (other.gameObject.TryGetComponent(out Enemy enemy))
             {
-                HP -= (int)(collisioninfo.impulse.sqrMagnitude / collisioninfo.gameObject.GetComponent<Rigidbody>().mass);
+                enemy.DealDamage(this);
             }
-            else if (HP < 0)
+        }
+
+        private void OnCollisionStay(Collision other)
+        {
+            if (other.gameObject.TryGetComponent(out Enemy enemy))
             {
-                HP = 0;
-                GAMEOVER.enabled = true;
+                enemy.DealDamage(this);
+            }
+        }
+
+        private void Update()
+        {
+            if (_health.value <= 0)
+            {
+                Time.timeScale = 0;
+                _ui.gameObject.SetActive(false);
+                _gameOverScreen.gameObject.SetActive(true);
             }
         }
     }

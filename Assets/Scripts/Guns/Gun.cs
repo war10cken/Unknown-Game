@@ -1,106 +1,73 @@
+#region
+
 using UnityEngine;
 using UnityEngine.UI;
-using Selectable = Utilities.Selectable;
+
+#endregion
 
 namespace Guns
 {
     public abstract class Gun : MonoBehaviour
     {
         [SerializeField] protected Slider Energy;
-
-        protected RaycastHit Hit;
-        protected Ray Ray;
-        protected const float MaxGrabDistance = 30;
-        protected float RightMouseClick;
-        protected Rigidbody ItemRigidbody;
-
+        [SerializeField] protected string Name;
+        
+        private float _horizontal;
         private Selectable _item;
-        private bool _lockTarget;
+        private float _leftMouseClick;
+        private float _rightMouseClick;
+        private float _vertical;
+
+        protected const float MaxGrabDistance = 30;
+        protected RaycastHit Hit;
+        protected Rigidbody ItemRigidbody;
+        protected Ray Ray;
+
+        public string GetName => Name;
 
         protected Selectable GrabItem()
         {
-            if (!_lockTarget)
-            {
-                Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            }
-        
-            float leftMouseClick = Input.GetAxisRaw("Fire1");
-            float vertical = Input.GetAxisRaw("Vertical");
-            float horizontal = Input.GetAxisRaw("Horizontal");
+            Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (leftMouseClick > 0 && Energy.value != 0)
-            {
+            _leftMouseClick = Input.GetAxisRaw("Fire1");
+            _vertical = Input.GetAxisRaw("Vertical");
+            _horizontal = Input.GetAxisRaw("Horizontal");
+
+            if (_leftMouseClick > 0 && Energy.value != 0)
                 if (Physics.Raycast(Ray, out Hit, MaxGrabDistance))
-                {
-                    Vector3 targetDirection = Hit.point - transform.position;
-                
-                    Debug.DrawRay(transform.position, targetDirection, Color.red, 0.01f);
-
-                    //transform.LookAt(Hit.point);
-
                     if (Hit.collider.gameObject.TryGetComponent(out Selectable item))
                     {
                         Energy.value -= 0.003f;
-                        _lockTarget = true;
 
-                        if (horizontal > 0)
-                        {
-                            item.transform.parent.Translate(0.07f, 0, 0);
-                        }
-                    
-                        if (horizontal < 0)
-                        {
-                            item.transform.parent.Translate(-0.07f, 0, 0);
-                        }
+                        if (_horizontal > 0) item.transform.parent.Translate(0, 0, 0.07f);
 
-                        if (vertical > 0)
-                        {
-                            item.transform.parent.Translate(0, 0, 0.07f);
-                        }
+                        if (_horizontal < 0) item.transform.parent.Translate(0, 0, -0.07f);
 
-                        if (vertical < 0)
-                        {
-                            item.transform.parent.Translate(0, 0, -0.07f);
-                        }
-                    
+                        if (_vertical > 0) item.transform.parent.Translate(-0.07f, 0, 0);
+
+                        if (_vertical < 0) item.transform.parent.Translate(0.07f, 0, 0);
+
                         if (item.TryGetComponent(out ItemRigidbody))
                         {
-                            RightMouseClick = Input.GetAxisRaw("Fire2");
+                            _rightMouseClick = Input.GetAxisRaw("Fire2");
 
-                            if (RightMouseClick > 0)
-                            {
-                                ItemRigidbody.constraints = RigidbodyConstraints.FreezeAll;
-                            }
+                            if (_rightMouseClick > 0) ItemRigidbody.constraints = RigidbodyConstraints.FreezeAll;
 
-                            if (Input.GetKey(KeyCode.T))
-                            {
-                                ItemRigidbody.constraints = RigidbodyConstraints.None;
-                            }
+                            if (Input.GetKey(KeyCode.T)) ItemRigidbody.constraints = RigidbodyConstraints.None;
                         }
 
-                        if (item)
-                        {
-                            item.transform.parent.Translate(Input.GetAxisRaw("Mouse X") / 2f / ItemRigidbody.mass,
-                                                            Input.GetAxisRaw("Mouse Y") / 2f / ItemRigidbody.mass, 
-                                                            Input.GetAxisRaw("Mouse ScrollWheel") * 5f / ItemRigidbody.mass);
-                        }
+                        float x = Input.GetAxisRaw("Mouse ScrollWheel") * 5f / ItemRigidbody.mass;
+                        float y = Input.GetAxisRaw("Mouse Y") / 2f / ItemRigidbody.mass;
+                        float z = Input.GetAxisRaw("Mouse X") / 2f / ItemRigidbody.mass;
 
-                        if (_lockTarget)
-                        {
-                            Ray = new Ray(transform.position, item.transform.position);
-                        }
+                        // item.transform.rotation = transform.parent.rotation;
+
+                        item.transform.parent.Translate(-x / 1.5f, y / 1.5f, z / 1.5f);
                         
                         _item = item;
                     }
 
-                }
-            }
-
-            if (leftMouseClick == 0)
-            {
-                _lockTarget = false;
-                Energy.value += 0.003f;
-            }
+            if (_leftMouseClick == 0) Energy.value += 0.003f;
 
             return _item;
         }

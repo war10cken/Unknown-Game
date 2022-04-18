@@ -1,32 +1,34 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EtherCrystalGun : MonoBehaviour
 {
+    [SerializeField] private Slider _energy;
+    
     RaycastHit hit;
     [Header("Speed")]
     public float ColorSpeed = 0.05f;
+    [Header("EtherObject")]
+    EtherObject _EtherObject;
 
     Color Color;
+    float Store;
 
-    private GameObject obj;
+    GameObject obj;
     void FixedUpdate()
     {
-        Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-
-        //PlayerTracking(ray2);
-        //GunPosRot();
-        //DeformGunTracking();
-
-        if (Physics.Raycast(ray.origin, ray.direction, out hit) && hit.collider.gameObject.layer == 6 && Input.GetButton("Fire1"))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray.origin, ray.direction, out hit)
+         && hit.collider.gameObject.layer == 6 && Input.GetButton("Fire1") && _energy.value != 0)
         {
+            //
             if (obj != hit.collider.gameObject)
             {
                 Color = hit.collider.gameObject.GetComponent<Renderer>().material.color;
                 Color.a = 0.2f;
                 hit.collider.gameObject.GetComponent<Renderer>().material.color = Color;
-                Debug.Log(hit.collider.gameObject.GetComponent<Renderer>().material.color.a);
             }
-
+            //
             obj = hit.collider.gameObject;
 
             hit.collider.gameObject.GetComponent<BoxCollider>().enabled = false;
@@ -40,7 +42,8 @@ public class EtherCrystalGun : MonoBehaviour
 
             Color.a = 1;
             obj.GetComponent<Renderer>().material.color = Color;
-            obj = null;     
+            obj = null;
         }
+        
     }
 }

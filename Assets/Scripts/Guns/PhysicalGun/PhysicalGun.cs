@@ -1,35 +1,30 @@
-using TMPro;
+#region
+
 using UnityEngine;
-using Utilities;
+
+#endregion
 
 namespace Guns.PhysicalGun
 {
     public class PhysicalGun : Gun
     {
-        //[SerializeField] private TMP_Text _forcePowerText;
-        
         private float _forcePower;
-    
+
         private void FixedUpdate()
         {
             var item = GrabItem();
             
-            if (Input.GetKey(KeyCode.Q))
-            {
-                _forcePower += 7;
-                // _forcePowerText.text = $"Force Power - {_forcePower / 1000}";
-            }
-            
-            if (RightMouseClick > 0 && _forcePower != 0)
+            if (Input.GetKey(KeyCode.Q)) _forcePower += 7;
+
+            if (Input.GetKey(KeyCode.E) && _forcePower != 0)
             {
                 ItemRigidbody.constraints = RigidbodyConstraints.None;
                 ItemRigidbody.AddForce(transform.forward * _forcePower, ForceMode.Force);
                 Energy.value -= _forcePower / 1000;
             
-                Selectable.SetForcePower(_forcePower / 50, item);
+                Selectable.SetDamage(_forcePower / 50, item);
                 
                 _forcePower = 0;
-                // _forcePowerText.text = "Force Power - 0";
             }
         }
     }

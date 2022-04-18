@@ -1,23 +1,29 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+
 public class GameSystem : MonoBehaviour
 {
-    public Text FPS;
+    [SerializeField] private TMP_Text _fps;
+    [SerializeField] private Canvas _ui;
+    [SerializeField] private Canvas _exitMenu;
 
     private void Start()
     {
         Cursor.visible = true;
-        //Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Confined;
 
         Application.targetFrameRate = 60;
     }
 
     private void Update()
     {
-        FPS.text = "FPS " + (int)(1.0f / Time.smoothDeltaTime);
-        if (Input.GetButtonDown("Cancel"))
+        if (Input.GetKey(KeyCode.Escape))
         {
-            Application.Quit();
+            Time.timeScale = 0;
+            _ui.gameObject.SetActive(false);
+            _exitMenu.gameObject.SetActive(true);
         }
+        
+        _fps.text = "FPS " + (int)(1.0f / Time.smoothDeltaTime);
     }
 }

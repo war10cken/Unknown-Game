@@ -5,28 +5,36 @@ using UnityEngine;
 public class GunsPosRot : MonoBehaviour
 {
     [Header("GameObjects")]
-    public GameObject _Player;
-    public GameObject _LaserModel;
-    public GameObject _RayOriginMark;
+    public Player.Player Player;
+    public GameObject LaserModel;
+    public GameObject RayOriginMark;
+    
     [Header("Vectors")]
-    public Vector3 _offset;
+    public Vector3 Offset;
+    
     [Header("Raycast")]
-    public float _LaserLenght = 100;
-    public float _MaxDistanceCollision = 100;
+    public float RayLenght = 100;
+    public float MaxDistanceCollision = 100;
+    
     RaycastHit hit;
+    
     [Header("Velocities")]
-    public float _DeformGunPositionTrackingSpeed = 0.2f;
-    public float _LaserSpeedRot = 5f;
-    void FixedUpdate()
+    public float DeformationGunPositionTrackingSpeed = 0.2f;
+    public float LaserSpeedRotation = 5f;
+
+    private void FixedUpdate()
     {
-        Ray ray = new(_RayOriginMark.transform.position, _RayOriginMark.transform.forward);
-        if (Physics.Raycast(ray.origin, ray.direction * _LaserLenght, out hit, _MaxDistanceCollision))
+        Ray ray = new(RayOriginMark.transform.position, RayOriginMark.transform.forward);
+        
+        if (Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit, MaxDistanceCollision))
         {
-            Vector3 targetPos = _Player.transform.TransformPoint(_offset);
-            _LaserModel.transform.position = Vector3.MoveTowards(_LaserModel.transform.position, targetPos, _DeformGunPositionTrackingSpeed);
+            Vector3 targetPos = Player.transform.TransformPoint(Offset);
+            LaserModel.transform.position = Vector3.MoveTowards(LaserModel.transform.position,
+                                                                targetPos, DeformationGunPositionTrackingSpeed);
             if (hit.point == Vector3.zero)
             {
-                _LaserModel.transform.rotation = Quaternion.RotateTowards(_LaserModel.transform.rotation, _Player.transform.rotation, _LaserSpeedRot);
+                LaserModel.transform.rotation = Quaternion.RotateTowards(LaserModel.transform.rotation,
+                                                                         Player.transform.rotation, LaserSpeedRotation);
             }
         }
     }
