@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DeformGun : MonoBehaviour
 {
+    [SerializeField] private Slider _energy;
+    
     [Header("3DModels")]
     public GameObject Player;
     public GameObject LaserModel;
@@ -43,14 +46,20 @@ public class DeformGun : MonoBehaviour
 
         Debug.DrawRay(ray.origin, ray.direction * RayLenght, Color.red);
 
-        if (Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit, MaxDistanceCollision)
-         && Input.GetButtonDown("Fire1") && hit.collider.gameObject.layer == 6)
+        if (_energy.value != 0 && _energy.value > 0.3f)
         {
-            ShowLaser();
-            ObjectDeformation(ray);
-            AddForceToObject(ray);
-            InstantiateParticles(hit);
+            if (Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit, MaxDistanceCollision)
+             && Input.GetButtonDown("Fire1") && hit.collider.gameObject.layer == 6)
+            {
+                _energy.value -= 0.3f;
+                ShowLaser();
+                ObjectDeformation(ray);
+                AddForceToObject(ray);
+                InstantiateParticles(hit);
+            }
         }
+        
+        _energy.value += 0.003f;
     }
 
     private void InstantiateParticles(RaycastHit hit)

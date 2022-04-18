@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EtherCrystalGun : MonoBehaviour
 {
+    [SerializeField] private Slider _energy;
+    
     RaycastHit hit;
     [Header("Speed")]
     public float ColorSpeed = 0.05f;
@@ -15,7 +18,8 @@ public class EtherCrystalGun : MonoBehaviour
     void FixedUpdate()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray.origin, ray.direction, out hit) && hit.collider.gameObject.layer == 6 && Input.GetButton("Fire1"))
+        if (Physics.Raycast(ray.origin, ray.direction, out hit)
+         && hit.collider.gameObject.layer == 6 && Input.GetButton("Fire1") && _energy.value != 0)
         {
             //
             if (obj != hit.collider.gameObject)
@@ -40,5 +44,6 @@ public class EtherCrystalGun : MonoBehaviour
             obj.GetComponent<Renderer>().material.color = Color;
             obj = null;
         }
+        
     }
 }
