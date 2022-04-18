@@ -1,126 +1,112 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DeformGun : MonoBehaviour
 {
-    [SerializeField] private Slider _energy;
-    
-    [Header("3DModels")]
-    public GameObject Player;
-    public GameObject LaserModel;
-    
     [Header("Raycast")]
-    public float RayLenght = 100;
-    public float MaxDistanceCollision = 100;
-    
+    public float LaserLenght = 100f;
+    public float MaxDistanceCollision = 100f;
     RaycastHit hit;
-    
     [Header("ShowingRay")]
-    public float Duration = 5f;
-    public GameObject RayOriginMark;
-    public Material BeamMaterial;
     public float BeamDissapeareTime = 0.2f;
-    
+    public GameObject RayOriginMark;
+    public Material RayMaterial;
     [Header("Deformation")]
-    public float DeformationForce = 0.1f;
-    public float DeformationRadius = 1f;
-    public float ForcePower = 5f;
-    
-    [Header("Velocities")]
-    public float PlayerTrackingSpeed = 0.2f;
-    public float DeformationGunTrackingSpeed = 0.2f;
-    public float DeformationGunPositionTrackingSpeed = 0.2f;
-    public float LaserSpeedRotation = 5f;
-    
+    public float ForceDeform = 0.1f;
+    public float RadiusDeform = 0.5f;
+    public float AddforceToObject = 1000f;
     [Header("Particles")]
-    public ParticleSystem Particles;
-    
-    private ParticleSystem _instantiatedParticles;
-    
-    [Header("Vectors")]
-    public Vector3 Offset = new(1, 0, 0);
-
-    private void FixedUpdate()
+    public ParticleSystem HitPointParticle;
+    void FixedUpdate()
     {
         Ray ray = new(RayOriginMark.transform.position, RayOriginMark.transform.forward);
 
-        Debug.DrawRay(ray.origin, ray.direction * RayLenght, Color.red);
+        Debug.DrawRay(ray.origin, ray.direction * LaserLenght, Color.red);
 
-        if (_energy.value != 0 && _energy.value > 0.3f)
+        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButtonDown("Fire1") && hit.collider.gameObject.layer == 6)
         {
-            if (Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit, MaxDistanceCollision)
-             && Input.GetButtonDown("Fire1") && hit.collider.gameObject.layer == 6)
-            {
-                _energy.value -= 0.3f;
-                ShowLaser();
-                ObjectDeformation(ray);
-                AddForceToObject(ray);
-                InstantiateParticles(hit);
-            }
+            ShowLaser();
+            Deformation(ray);
+            Addforce(ray);
+            HitParticle(hit);
         }
-        
-        _energy.value += 0.003f;
     }
-
-    private void InstantiateParticles(RaycastHit hit)
+    void HitParticle(RaycastHit hit)
     {
-        _instantiatedParticles = Instantiate(Particles, hit.point, Quaternion.identity);
+        ParticleSystem instantiatedParticle;
+        instantiatedParticle = Instantiate(HitPointParticle, hit.point, Quaternion.identity);
 
-        _instantiatedParticles.gameObject.SetActive(true);
+        instantiatedParticle.gameObject.SetActive(true);
 
-        Destroy(_instantiatedParticles.gameObject, BeamDissapeareTime * 3);
+        Destroy(instantiatedParticle.gameObject, BeamDissapeareTime * 3);
     }
-
-    private void ShowLaser()
+   
+    void ShowLaser()
     {
-        GameObject beam = new ("Beam");
-        beam.AddComponent<LineRenderer>();
-        
-        var gunBeam = beam.GetComponent<LineRenderer>();
-        gunBeam.material = BeamMaterial;
+        LineRenderer gunBeam;
+
+        GameObject beamGameObject = new ("Beam");
+
+        beamGameObject.AddComponent<LineRenderer>();
+        gunBeam = beamGameObject.GetComponent<LineRenderer>();
+        gunBeam.material = RayMaterial;
+
         gunBeam.startWidth = 0.2f;
         gunBeam.endWidth = 0.1f;
+
         gunBeam.useWorldSpace = true;
+
         gunBeam.SetPosition(0, RayOriginMark.transform.position);
         gunBeam.SetPosition(1, hit.point);
 
-        Destroy(beam, BeamDissapeareTime);
+        Destroy(beamGameObject, BeamDissapeareTime);
     }
-
-    private void AddForceToObject(Ray ray)
+    void Addforce(Ray ray)
     {
-        //Получаем доступ к rigidbody объекта
-        Rigidbody deformRigidbody = hit.collider.gameObject.GetComponent<Rigidbody>();
-        //Откидываем объект
-        deformRigidbody.AddForce(ray.direction * ForcePower);
+        // Получаем доступ к rigidbody объекта.
+        Rigidbody deformMeshRigidbody = hit.collider.gameObject.GetComponent<Rigidbody>();
+        // Откидываем объект.
+        deformMeshRigidbody.AddForce(ray.direction * AddforceToObject);
     }
-
-    private void ObjectDeformation(Ray ray)
+    void Deformation(Ray ray)
     {
         Mesh deformingMesh = hit.collider.gameObject.GetComponent<MeshFilter>().mesh;
 
-        GameObject gameObjectDeformingMesh = hit.collider.gameObject;
+        GameObject deformingGameObject = hit.collider.gameObject;
 
-        //копируем все вершины меша.
-        Vector3[] meshVertices = deformingMesh.vertices;
-        //
-        Vector3 hitPointLocalCoordinate = gameObjectDeformingMesh.transform.InverseTransformPoint(hit.point);
+        // Копируем все вершины меша.
+        Vector3[] copyMeshVertices = deformingMesh.vertices;
+        // Calculate the transform's position relative to the DeformingGameObject.
+        Vector3 hitPointToLocalCoordinatesMesh = deformingGameObject.transform.InverseTransformPoint(hit.point);
 
-        for (int i = 0; i < meshVertices.Length; i++)
+        for (int i = 0; i < copyMeshVertices.Length; i++)
         {
-            float distance = Vector3.Distance(hitPointLocalCoordinate, meshVertices[i]);
-            
-            if (DeformationRadius > distance)
+            // Находим дистанцию между точкой столкновения луча и вершиной меша.
+            float _Distance = (float)Vector3.Distance(hitPointToLocalCoordinatesMesh, copyMeshVertices[i]);
+            if (RadiusDeform > _Distance)
             {
-                meshVertices[i] += ray.direction.normalized * DeformationForce;
+                copyMeshVertices[i] += ray.direction.normalized * ForceDeform;
             }
         }
 
-        deformingMesh.vertices = meshVertices;
+        deformingMesh.vertices = copyMeshVertices;
         deformingMesh.RecalculateBounds();
         //deformingMesh.RecalculateNormals();
 
-        //Destroy(gameObjectDeformingMesh.GetComponent<MeshCollider>());
-        //gameObjectDeformingMesh.AddComponent<MeshCollider>().convex = true;
+        Destroy(deformingGameObject.GetComponent<BoxCollider>());
+        deformingGameObject.AddComponent<BoxCollider>();
+        //deformingGameObject.AddComponent<MeshCollider>().convex = true;
     }
 }
+//public float LaserSpeedRotation = 5f;
+//public GameObject LaserObject;
+//public float PlayerTrackingSpeed = 0.2f;
+//public float DeformGunTrackingSpeed = 0.2f;
+//[Header("Vectors")]
+//public Vector3 Offset = new(1, 0, 0);
+//public float DeformGunPositionTrackingSpeed = 0.2f;
+
+//[Header("Objects")]
+//public GameObject Player;
+//public float duration = 5f;
+
+//private ParticleSystem InstantiatedParticle;

@@ -1,51 +1,48 @@
 using UnityEngine;
-
-namespace Player
+public class PlayerMovement : MonoBehaviour
 {
-    [RequireComponent(typeof(Rigidbody))]
-    public class PlayerMovement : MonoBehaviour
+    public float PlayerSpeed = 5f;
+    public float JumpForce = 1500f;
+    public float MaxRayDistance = 1f;
+    Rigidbody PlayerRigidbody;
+    void Start()
     {
-        public float PlayerSpeed = 5f;
-        public float JumpForce = 1500f;
-        public float MaxRayDistance = 1f;
+        PlayerRigidbody = GetComponent<Rigidbody>();
+    }
+    void FixedUpdate()
+    {
+        float HorizontalAxis = Input.GetAxis("Horizontal");
+        float VerticalAxis = Input.GetAxis("Vertical");
 
-        private Rigidbody _rigidbody;
-        private RaycastHit _hit;
-
-        private void Start()
+        if (Physics.Raycast(transform.position, Vector3.down, MaxRayDistance))
         {
-            _rigidbody = GetComponent<Rigidbody>();
-        }
-
-        private void FixedUpdate()
-        {
-            float xAxis = Input.GetAxis("Horizontal");
-            float yAxis = Input.GetAxis("Vertical");
-
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out _hit, MaxRayDistance))
+            Vector3 CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
+            // Векторное движение.
+            transform.position +=  CharacterMoveDirection.normalized * PlayerSpeed;
+            if (Input.GetButtonDown("Jump"))
             {
-                if (Input.GetButtonDown("Jump"))
-                {
-                    //player jump
-                    _rigidbody.AddForce((Vector3.up + transform.forward * yAxis + Vector3.right * xAxis) * JumpForce);
-                }
-                //Vector movement
-                Vector3 moveDirection = new Vector3(xAxis, 0, yAxis);
-                //Standard movement
-                transform.position += moveDirection.normalized * PlayerSpeed;
-                //Movement with physics
-                //Player_Rigidbody.AddForce(_MoveDirection.normalized * _PlayerSpeed, ForceMode.Force);
-
-                if (moveDirection != Vector3.zero)
-                {
-                    //rotation
-                    //transform.forward = Vector3.Slerp(transform.forward, _MoveDirection, _RotSpeed);
-                }
-                
-                Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
-                Debug.DrawRay(transform.position, Vector3.down * MaxRayDistance, Color.red);
+                //Player's jump
+                PlayerRigidbody.AddForce((Vector3.up + CharacterMoveDirection).normalized * JumpForce);
             }
+            // Направление движения пользователя
+            Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
+            // Луч проверки пользователя на прыжок
+            Debug.DrawRay(transform.position, Vector3.down * MaxRayDistance, Color.red);
         }
     }
-
 }
+
+//if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, _MaxRayDistance))
+//public float _RotSpeed = 0.2f;
+//Player_Rigidbody.AddForce((Vector3.up + transform.forward * _Yaxis + Vector3.right * _Xaxis) * _JumpForce);
+//transform.position += transform.forward.normalized * _PlayerSpeed * _Yaxis + transform.right.normalized * _PlayerSpeed * _Xaxis;
+/*
+                //Movement with physics
+                Player_Rigidbody.AddForce(_MoveDirection.normalized * _PlayerSpeed, ForceMode.Force);
+
+                if (_MoveDirection != Vector3.zero)
+                {
+                    //rotation
+                    transform.forward = Vector3.Slerp(transform.forward, _MoveDirection, _RotSpeed);
+                }
+*/

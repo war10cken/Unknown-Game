@@ -5,28 +5,28 @@ using UnityEngine;
 public class GunsMouseTracking : MonoBehaviour
 {
     [Header("Raycast")]
-    public float LaserLenght = 100;
-    
+    public float RayLenght = 100;
     RaycastHit hit;
-    
-    [Header("3DModels")]
-    public GameObject LaserModel;
-    
+    [Header("GameObjects")]
+    public GameObject GunModel;
     [Header("Velocities")]
-    public float DeformationGunTrackingSpeed = 0.2f;
-
-    private void FixedUpdate()
+    public float GunTrackingSpeed = 0.2f;
+    void FixedUpdate()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit))
+        if (Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit))
         {
-            Vector3 direction = (hit.point - LaserModel.transform.position).normalized;
+            Vector3 direction = hit.point - GunModel.transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            LaserModel.transform.rotation = Quaternion.Slerp(LaserModel.transform.rotation, 
-                                                              lookRotation, DeformationGunTrackingSpeed);
-            
-            Debug.DrawRay(LaserModel.transform.position, direction, Color.blue);
+            GunModel.transform.rotation = Quaternion.Slerp(GunModel.transform.rotation, lookRotation, GunTrackingSpeed);
+            Debug.DrawRay(GunModel.transform.position, direction, Color.blue);
+        }
+        else
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(ray.direction);
+            GunModel.transform.rotation = Quaternion.Slerp(GunModel.transform.rotation, lookRotation, GunTrackingSpeed);
         }
     }
 }
+//Vector3 direction = (hit.point - LaserModel.transform.position).normalized;
