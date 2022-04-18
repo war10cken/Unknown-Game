@@ -6313,7 +6313,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c78c30869d36664fb11dbcdae6b8714, type: 3}
   m_Name: 
@@ -6333,8 +6333,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329feb79c0edfbf4aaeb70c8d917efd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LaserLenght: 100
-  LaserModel: {fileID: 983350838}
+  RayLenght: 100
+  GunModel: {fileID: 983350838}
   GunTrackingSpeed: 0.2
 --- !u!114 &963194239
 MonoBehaviour:
