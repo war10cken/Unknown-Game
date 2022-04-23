@@ -520,6 +520,9 @@ MonoBehaviour:
   Energy: {fileID: 2018973192}
   Name: "\u0413\u0440\u0430\u0432\u0438\u0442\u0430\u0446\u0438\u043E\u043D\u043D\u0430\u044F
     \u043F\u0443\u0448\u043A\u0430"
+  _rayMaterial: {fileID: 2100000, guid: d7f6e89a9bb804f4f822e1b9fed599b3, type: 2}
+  _rayOriginMark: {fileID: 1765471758}
+  _beamDisappearedTime: 0.5
 --- !u!1 &219753927
 GameObject:
   m_ObjectHideFlags: 0
@@ -1476,16 +1479,20 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.095
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.045021456
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.259
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1537,16 +1544,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.095
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.045021456
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.259
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1786,16 +1797,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.095
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.045021456
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.259
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1847,7 +1862,7 @@ GameObject:
   - component: {fileID: 557493306}
   - component: {fileID: 557493305}
   m_Layer: 0
-  m_Name: Fragments
+  m_Name: HitPointParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7700,8 +7715,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gravityGun: {fileID: 146732271}
   _physicalGun: {fileID: 1041865160}
-  _deformationGun: {fileID: 1260411609}
-  _etherCrystalGun: {fileID: 1208269997}
+  _deformationGun: {fileID: 1260411611}
+  _etherCrystalGun: {fileID: 1208269999}
   _gunName: {fileID: 313336842}
 --- !u!114 &963194236
 MonoBehaviour:
@@ -7715,9 +7730,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c78c30869d36664fb11dbcdae6b8714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RayLenght: 100
   Player: {fileID: 426605417}
-  PlayerSpeed: 0.2
+  LaserLenght: 100
+  PlayerTrackingSpeed: 0.2
 --- !u!114 &963194237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7745,14 +7760,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 329feb79c0edfbf4aaeb70c8d917efd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LaserLenght: 100
-  LaserModel: {fileID: 1260411609}
-  DeformationGunTrackingSpeed: 0.2
+  RayLenght: 100
+  GunModel: {fileID: 0}
+  GunTrackingSpeed: 0.2
 --- !u!1 &1020756694
 GameObject:
   m_ObjectHideFlags: 0
@@ -7844,6 +7859,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Energy: {fileID: 2018973192}
   Name: "\u0424\u0438\u0437\u0438\u0447\u0435\u0441\u043A\u0430\u044F \u043F\u0443\u0448\u043A\u0430"
+  _rayMaterial: {fileID: 2100000, guid: 43a2c4476f8a28746a2a252d0eb283ec, type: 2}
+  _rayOriginMark: {fileID: 1765471758}
+  _beamDisappearedTime: 0.5
 --- !u!1 &1103135709
 GameObject:
   m_ObjectHideFlags: 0
@@ -8393,6 +8411,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5202f78ced27a5447a59be87eb316d02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Energy: {fileID: 0}
+  Name: 
+  _rayMaterial: {fileID: 0}
+  _rayOriginMark: {fileID: 0}
+  _beamDisappearedTime: 0
   _energy: {fileID: 2018973192}
   ColorSpeed: 0.05
 --- !u!1 &1219447120
@@ -8798,24 +8821,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58c56d4737ada8140a09f36aa6658d0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _energy: {fileID: 2018973192}
-  Player: {fileID: 426605417}
-  LaserModel: {fileID: 1260411609}
-  RayLenght: 100
+  Energy: {fileID: 0}
+  Name: 
+  _rayMaterial: {fileID: 0}
+  _rayOriginMark: {fileID: 0}
+  _beamDisappearedTime: 0
+  LaserLenght: 100
   MaxDistanceCollision: 1000
-  Duration: 5
-  RayOriginMark: {fileID: 1765471758}
-  BeamMaterial: {fileID: 2100000, guid: 05a865fa918c5b64693f6178920e25b0, type: 2}
   BeamDissapeareTime: 0.1
-  DeformationForce: 0.1
-  DeformationRadius: 0.5
-  ForcePower: 1500
-  PlayerTrackingSpeed: 0.05
-  DeformationGunTrackingSpeed: 0.2
-  DeformationGunPositionTrackingSpeed: 0.4
-  LaserSpeedRotation: 5
-  Particles: {fileID: 557493306}
-  Offset: {x: 0, y: 0, z: 0}
+  RayOriginMark: {fileID: 1765471758}
+  RayMaterial: {fileID: 2100000, guid: 05a865fa918c5b64693f6178920e25b0, type: 2}
+  ForceDeform: 0.1
+  RadiusDeform: 0.5
+  AddforceToObject: 1000
+  HitPointParticle: {fileID: 557493306}
 --- !u!1 &1390889295
 GameObject:
   m_ObjectHideFlags: 0
@@ -9448,7 +9467,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765471758}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.014, y: 0.029, z: 0.836}
+  m_LocalPosition: {x: 0.001, y: 0.029, z: 0.874}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9543,16 +9562,20 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.095
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.045021456
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.259
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0c6c6b5bfe24bc47abb96c5f5a73c18, type: 3}
       propertyPath: m_LocalRotation.w
