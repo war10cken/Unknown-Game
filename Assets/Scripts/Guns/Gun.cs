@@ -1,5 +1,6 @@
 #region
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,9 @@ namespace Guns
     {
         [SerializeField] protected Slider Energy;
         [SerializeField] protected string Name;
+        [SerializeField] private Material _rayMaterial;
+        [SerializeField] private GameObject _rayOriginMark;
+        [SerializeField] private float _beamDisappearedTime;
         
         private float _horizontal;
         private Selectable _item;
@@ -25,6 +29,22 @@ namespace Guns
 
         public string GetName => Name;
 
+        private GameObject _beam;
+
+        private void Awake()
+        {
+            _beam = new GameObject("Beam");
+            _beam.AddComponent<LineRenderer>();
+            _beam.SetActive(false);
+        }
+
+        protected void TrackMouse(RaycastHit hit)
+        {
+            Vector3 direction = hit.point - transform.position;
+            Debug.Log(direction);
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
+        
         protected Selectable GrabItem()
         {
             Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -32,13 +52,18 @@ namespace Guns
             _leftMouseClick = Input.GetAxisRaw("Fire1");
             _vertical = Input.GetAxisRaw("Vertical");
             _horizontal = Input.GetAxisRaw("Horizontal");
-
+            
             if (_leftMouseClick > 0 && Energy.value != 0)
                 if (Physics.Raycast(Ray, out Hit, MaxGrabDistance))
                     if (Hit.collider.gameObject.TryGetComponent(out Selectable item))
                     {
-                        Energy.value -= 0.003f;
+                        ShowBeam();
+                        _beam.SetActive(true);
 
+                        Energy.value -= 0.003f;
+                        
+                        TrackMouse(Hit);
+                        
                         if (_horizontal > 0) item.transform.parent.Translate(0, 0, 0.07f);
 
                         if (_horizontal < 0) item.transform.parent.Translate(0, 0, -0.07f);
@@ -60,16 +85,33 @@ namespace Guns
                         float y = Input.GetAxisRaw("Mouse Y") / 2f / ItemRigidbody.mass;
                         float z = Input.GetAxisRaw("Mouse X") / 2f / ItemRigidbody.mass;
 
-                        // item.transform.rotation = transform.parent.rotation;
+                        item.transform.parent.Translate(-x * 1.2f, y * 1.2f, z * 1.2f);
 
-                        item.transform.parent.Translate(-x / 1.5f, y / 1.5f, z / 1.5f);
+                        _rayOriginMark.transform.rotation = transform.rotation;
+                        
+                        // _rayOriginMark.transform.Translate(0, -transform.rotation.x, 0);
                         
                         _item = item;
                     }
 
-            if (_leftMouseClick == 0) Energy.value += 0.003f;
+            if (_leftMouseClick == 0)
+            {
+                Energy.value += 0.003f;
+                _beam.SetActive(false);
+            }
 
             return _item;
+        }
+        
+        private void ShowBeam()
+        {
+            var gunBeam = _beam.GetComponent<LineRenderer>();
+            gunBeam.material = _rayMaterial;
+            gunBeam.startWidth = 0.1f;
+            gunBeam.endWidth = 0.1f;
+            gunBeam.useWorldSpace = true;
+            gunBeam.SetPosition(0, _rayOriginMark.transform.position);
+            gunBeam.SetPosition(1, Hit.point);
         }
     }
 }
