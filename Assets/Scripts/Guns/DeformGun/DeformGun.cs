@@ -1,6 +1,7 @@
+using Guns;
 using UnityEngine;
 
-public class DeformGun : MonoBehaviour
+public class DeformGun : Gun
 {
     [Header("Raycast")]
     public float LaserLenght = 100f;
@@ -22,8 +23,10 @@ public class DeformGun : MonoBehaviour
 
         Debug.DrawRay(ray.origin, ray.direction * LaserLenght, Color.red);
 
-        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButtonDown("Fire1") && hit.collider.gameObject.layer == 6)
+        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision)
+         && Input.GetButtonDown("Fire1") && hit.collider.gameObject.layer == 6)
         {
+            // TrackMouse(hit);
             ShowLaser();
             Deformation(ray);
             Addforce(ray);
