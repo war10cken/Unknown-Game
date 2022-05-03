@@ -1,3 +1,5 @@
+using System;
+using DG.Tweening;
 using Guns;
 using UnityEngine;
 
@@ -26,13 +28,21 @@ public class DeformGun : Gun
         if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision)
          && Input.GetButtonDown("Fire1") && hit.collider.gameObject.layer == 6)
         {
-            // TrackMouse(hit);
+            TrackMouse(hit);
             ShowLaser();
             Deformation(ray);
             Addforce(ray);
             HitParticle(hit);
         }
     }
+
+    protected override void TrackMouse(RaycastHit hit)
+    {
+        transform.DORotateQuaternion(new Quaternion(0, 0, 0, 0), 1f);
+        Vector3 direction = hit.point - transform.position;
+        transform.rotation = Quaternion.LookRotation(direction);
+    }
+
     void HitParticle(RaycastHit hit)
     {
         ParticleSystem instantiatedParticle;
