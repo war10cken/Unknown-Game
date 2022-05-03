@@ -30,18 +30,25 @@ namespace Guns
         public string GetName => Name;
 
         private GameObject _beam;
+        private LineRenderer _gunBeam;
 
         private void Awake()
         {
             _beam = new GameObject("Beam");
             _beam.AddComponent<LineRenderer>();
             _beam.SetActive(false);
+            
+            _gunBeam = _beam.GetComponent<LineRenderer>();
+            _gunBeam.material = _rayMaterial;
+            _gunBeam.startWidth = 0.1f;
+            _gunBeam.endWidth = 0.1f;
+            _gunBeam.useWorldSpace = false;
+            _gunBeam.SetPosition(0, _rayOriginMark.transform.position);
         }
 
-        protected void TrackMouse(RaycastHit hit)
+        protected virtual void TrackMouse(RaycastHit hit)
         {
             Vector3 direction = hit.point - transform.position;
-            Debug.Log(direction);
             transform.rotation = Quaternion.LookRotation(direction);
         }
         
@@ -52,12 +59,12 @@ namespace Guns
             _leftMouseClick = Input.GetAxisRaw("Fire1");
             _vertical = Input.GetAxisRaw("Vertical");
             _horizontal = Input.GetAxisRaw("Horizontal");
-            
+
             if (_leftMouseClick > 0 && Energy.value != 0)
                 if (Physics.Raycast(Ray, out Hit, MaxGrabDistance))
                     if (Hit.collider.gameObject.TryGetComponent(out Selectable item))
                     {
-                        ShowBeam();
+                        ShowBeam(Hit);
                         _beam.SetActive(true);
 
                         Energy.value -= 0.003f;
@@ -102,16 +109,11 @@ namespace Guns
 
             return _item;
         }
-        
-        private void ShowBeam()
+
+        private void ShowBeam(RaycastHit hit)
         {
-            var gunBeam = _beam.GetComponent<LineRenderer>();
-            gunBeam.material = _rayMaterial;
-            gunBeam.startWidth = 0.1f;
-            gunBeam.endWidth = 0.1f;
-            gunBeam.useWorldSpace = true;
-            gunBeam.SetPosition(0, _rayOriginMark.transform.position);
-            gunBeam.SetPosition(1, Hit.point);
+            _gunBeam.SetPosition(0, _rayOriginMark.transform.position);
+            _gunBeam.SetPosition(1, hit.point);
         }
     }
 }
