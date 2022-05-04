@@ -16,6 +16,7 @@ public class DeformGun : MonoBehaviour
     public float AddforceToObject = 1000f;
     [Header("Particles")]
     public ParticleSystem HitPointParticle;
+    public float ParticleDissapeareTime = 1f;
     void FixedUpdate()
     {
         Ray ray = new(RayOriginMark.transform.position, RayOriginMark.transform.forward);
@@ -37,7 +38,7 @@ public class DeformGun : MonoBehaviour
 
         instantiatedParticle.gameObject.SetActive(true);
 
-        Destroy(instantiatedParticle.gameObject, BeamDissapeareTime * 3);
+        Destroy(instantiatedParticle.gameObject, ParticleDissapeareTime);
     }
    
     void ShowLaser()
