@@ -12,7 +12,8 @@ public class GameSystem : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
 
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 60; // 144
+        //QualitySettings.vSyncCount = 1;
     }
 
     private void Update()
