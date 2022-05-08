@@ -3,24 +3,29 @@ using UnityEngine.UI;
 
 public class EtherCrystalGun : MonoBehaviour
 {
+    //
     [SerializeField] private Slider _energy;
-    
+    Color Color;
+    float Store;
+    //
     RaycastHit hit;
     [Header("Speed")]
     public float ColorSpeed = 0.05f;
-
-    Color Color;
-    float Store;
-
+    [Header("GameObjects")]
     GameObject hittedObj;
-
-    private float TimeCounter = 0;
+    [Header("Timer")]
+    public float TimeCounter = 0;
+    [Header("ShowingRay")]
+    public GameObject BeamGameObject;
+    public GameObject RayOriginMark;
     void FixedUpdate()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray.origin, ray.direction, out hit) && hit.collider.gameObject.layer == 6 && Input.GetButton("Fire1") && _energy.value != 0)
+        if (Physics.Raycast(ray.origin, ray.direction, out hit) && hit.collider.gameObject.layer == 10 && Input.GetButton("Fire1") && _energy.value != 0)
         {
+            ShowLaser();
+
             hittedObj = hit.collider.gameObject;
 
             Color = hit.collider.gameObject.GetComponent<Renderer>().material.color;
@@ -51,6 +56,26 @@ public class EtherCrystalGun : MonoBehaviour
             }
         }
     }
+    void ShowLaser()
+    {
+        LineRenderer gunBeam;
+
+        gunBeam = BeamGameObject.GetComponent<LineRenderer>();
+
+        gunBeam.startWidth = 0.2f;
+        gunBeam.endWidth = 0.1f;
+
+        gunBeam.useWorldSpace = true;
+
+        gunBeam.SetPosition(0, RayOriginMark.transform.position);
+        gunBeam.SetPosition(1, hit.point);
+        //Debug.Log(hit.point);   
+    }
+    void DestructLaser()
+    {
+        BeamGameObject.GetComponent<LineRenderer>().SetPosition(0, Vector3.zero);
+        BeamGameObject.GetComponent<LineRenderer>().SetPosition(1, Vector3.zero);
+    }
 }
 
 /*
@@ -80,3 +105,4 @@ public class EtherCrystalGun : MonoBehaviour
             obj = null;
         }
         */
+//|| gameObject.activeSelf == false

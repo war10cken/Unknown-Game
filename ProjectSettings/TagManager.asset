@@ -14,8 +14,8 @@ TagManager:
   - DeformingMeshes
   - MoveableMeshes
   - RotatbleMeshes
-  - 
-  - 
+  - UnCollisionable
+  - EtherMeshes
   - 
   - 
   - 
