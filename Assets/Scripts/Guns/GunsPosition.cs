@@ -15,7 +15,7 @@ public class GunsPosition : MonoBehaviour
     public float DeformationGunPositionTrackingSpeed = 0.2f;
     public float LaserSpeedRotation = 5f;
 
-    private void FixedUpdate()
+    private void Update()
     {
         Ray ray = new(RayOriginMark.transform.position, RayOriginMark.transform.forward);
 

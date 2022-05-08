@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class DeformGun : MonoBehaviour
 {
     [Header("Raycast")]
@@ -7,7 +6,7 @@ public class DeformGun : MonoBehaviour
     public float MaxDistanceCollision = 100f;
     RaycastHit hit;
     [Header("ShowingRay")]
-    public float BeamDissapeareTime = 0.2f;
+    public GameObject BeamGameObject;
     public GameObject RayOriginMark;
     public Material RayMaterial;
     [Header("Deformation")]
@@ -17,19 +16,21 @@ public class DeformGun : MonoBehaviour
     [Header("Particles")]
     public ParticleSystem HitPointParticle;
     public float ParticleDissapeareTime = 1f;
-    void FixedUpdate()
+    void Update()
     {
         Ray ray = new(RayOriginMark.transform.position, RayOriginMark.transform.forward);
-
         Debug.DrawRay(ray.origin, ray.direction * LaserLenght, Color.red);
-
-        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButtonDown("Fire1") && hit.collider.gameObject.layer == 6)
+        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButton("Fire1"))
         {
             ShowLaser();
-            Deformation(ray);
-            Addforce(ray);
-            HitParticle(hit);
-        }
+            if (hit.collider.gameObject.GetComponent<Rigidbody>() != null)
+            {
+                Deformation(ray);
+                Addforce(ray);
+                HitParticle(hit);
+            }            
+        }else
+        {DestructLaser();}
     }
     void HitParticle(RaycastHit hit)
     {
@@ -45,11 +46,7 @@ public class DeformGun : MonoBehaviour
     {
         LineRenderer gunBeam;
 
-        GameObject beamGameObject = new ("Beam");
-
-        beamGameObject.AddComponent<LineRenderer>();
-        gunBeam = beamGameObject.GetComponent<LineRenderer>();
-        gunBeam.material = RayMaterial;
+        gunBeam = BeamGameObject.GetComponent<LineRenderer>();
 
         gunBeam.startWidth = 0.2f;
         gunBeam.endWidth = 0.1f;
@@ -58,8 +55,12 @@ public class DeformGun : MonoBehaviour
 
         gunBeam.SetPosition(0, RayOriginMark.transform.position);
         gunBeam.SetPosition(1, hit.point);
-
-        Destroy(beamGameObject, BeamDissapeareTime);
+        //Debug.Log(hit.point);   
+    }
+    void DestructLaser()
+    {
+        BeamGameObject.GetComponent<LineRenderer>().SetPosition(0, Vector3.zero);
+        BeamGameObject.GetComponent<LineRenderer>().SetPosition(1, Vector3.zero);
     }
     void Addforce(Ray ray)
     {
@@ -111,3 +112,22 @@ public class DeformGun : MonoBehaviour
 //public float duration = 5f;
 
 //private ParticleSystem InstantiatedParticle;
+/*
+if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit) && Input.GetButton("Fire1"))
+{
+    ShowLaser();
+}
+else
+{
+    beamGameObject.GetComponent<LineRenderer>().SetPosition(0, Vector3.zero);
+    beamGameObject.GetComponent<LineRenderer>().SetPosition(1, Vector3.zero);
+}
+*/
+/*ShowLaser
+ * GameObject beamGameObject = new ("Beam");
+ * beamGameObject.AddComponent<LineRenderer>(); 
+ * gunBeam.material = RayMaterial;
+ * Destroy(beamGameObject, BeamDissapeareTime);
+ * public float BeamDissapeareTime = 0.2f;
+*/
+//if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButton("Fire1") && hit.collider.gameObject.layer == 6)

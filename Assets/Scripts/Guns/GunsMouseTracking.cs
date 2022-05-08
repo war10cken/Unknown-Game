@@ -7,7 +7,7 @@ public class GunsMouseTracking : MonoBehaviour
     RaycastHit hit;
     [Header("Velocities")]
     public float GunTrackingSpeed = 0.2f;
-    void FixedUpdate()
+    void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

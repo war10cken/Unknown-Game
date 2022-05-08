@@ -1,37 +1,50 @@
 using UnityEngine;
+using DG.Tweening;
 public class PlayerMovement : MonoBehaviour
 {
     public float PlayerSpeed = 5f;
-    public float JumpForce = 1500f;
     public float MaxRayDistance = 1f;
-    Rigidbody PlayerRigidbody;
-    void Start()
+    public Vector3 IfJumpedRayPositionOffset;
+    private Vector3 CharacterMoveDirection;
+    [Header("CollisionSystem")]
+    public float RayLenght = 1f;
+    public float ForceCollision = 5f;
+    RaycastHit Hit;
+    public Vector3 CollisionRayOrigin;
+    void Update()
     {
-        PlayerRigidbody = GetComponent<Rigidbody>();
-    }
-    void FixedUpdate()
-    {
-        float HorizontalAxis = Input.GetAxis("Horizontal");
-        float VerticalAxis = Input.GetAxis("Vertical");
+        float HorizontalAxis = Input.GetAxisRaw("Horizontal");
+        float VerticalAxis = Input.GetAxisRaw("Vertical");
 
-        if (Physics.Raycast(transform.position, Vector3.down, MaxRayDistance))
+        if (Physics.Raycast(transform.position + IfJumpedRayPositionOffset, Vector3.down, MaxRayDistance))
         {
-            Vector3 CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
-            // Векторное движение.
-            transform.position +=  CharacterMoveDirection.normalized * PlayerSpeed;
-            if (Input.GetButtonDown("Jump"))
+            CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
+            // Полуфизическое Движение.
+            Ray DistanceToCollisionRay = new(transform.position + CollisionRayOrigin, CharacterMoveDirection);
+            if (!Physics.Raycast(DistanceToCollisionRay, out Hit, RayLenght) && !Input.GetButton("Fire3") && !Input.GetButton("Jump") )
             {
-                //Player's jump
-                PlayerRigidbody.AddForce((Vector3.up + CharacterMoveDirection).normalized * JumpForce);
+                GetComponent<Rigidbody>().velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
             }
-            // Направление движения пользователя
-            Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
-            // Луч проверки пользователя на прыжок
-            Debug.DrawRay(transform.position, Vector3.down * MaxRayDistance, Color.red);
+            else if (Physics.Raycast(DistanceToCollisionRay, out Hit, RayLenght))
+            {
+                Rigidbody hitRigidBody = Hit.collider.gameObject.GetComponent<Rigidbody>();
+                if (hitRigidBody != null)
+                {
+                    hitRigidBody.AddForce(CharacterMoveDirection.normalized * ForceCollision);
+                }
+                //Debug.Log(hitRigidBody);
+            }
         }
+        // Проверка столкновений с коллайдерами.
+        Debug.DrawRay(transform.position + CollisionRayOrigin, CharacterMoveDirection * RayLenght, Color.black);
+        // Направление движения пользователя.
+        Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
+        // Луч проверки пользователя на прыжок.
+        Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
     }
 }
 
+//    public float JumpForce = 1500f;
 //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, _MaxRayDistance))
 //public float _RotSpeed = 0.2f;
 //Player_Rigidbody.AddForce((Vector3.up + transform.forward * _Yaxis + Vector3.right * _Xaxis) * _JumpForce);
@@ -46,3 +59,11 @@ public class PlayerMovement : MonoBehaviour
                     transform.forward = Vector3.Slerp(transform.forward, _MoveDirection, _RotSpeed);
                 }
 */
+/*
+// Физическое движение.
+PlayerRigidbody.velocity = CharacterMoveDirection.normalized * PlayerSpeed;
+PlayerRigidbody.AddForce(CharacterMoveDirection.normalized * PlayerSpeed);
+// Векторное движение.
+transform.position += CharacterMoveDirection.normalized * PlayerSpeed;
+*/
+//public float MaxPlayerSpeed = 1000f;

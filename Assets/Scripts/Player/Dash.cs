@@ -1,26 +1,32 @@
 using UnityEngine;
-
+using DG.Tweening;
 public class Dash : MonoBehaviour
 {
-    public float DashVelocity = 5f;
-    Rigidbody PlayerRigidbody;
-
+    public float DashVelocity = 50f;
     private int Counter = 0;
-    private void Start()
+    void Update()
     {
-        PlayerRigidbody = GetComponent<Rigidbody>();
-    }
-    void FixedUpdate()
-    {
-        if (Input.GetButtonDown("Fire3") && Counter > 4000)
+        if (Input.GetButtonDown("Fire3") && Counter >= 4000)
         {
-            PlayerRigidbody.AddForce(transform.forward * DashVelocity);
+            GetComponent<Rigidbody>().velocity += transform.forward * DashVelocity;
             Counter = 0;
         }
-        Counter += (int)(1 / Time.fixedDeltaTime);
+        if (Counter > 4000) 
+        {
+            Counter = 4000;
+        }
+        else
+        {
+            Counter += (int)(1 / Time.fixedDeltaTime);
+        }
+        //Debug.Log(Counter);
     }
 }
 /*
+ *     public float DashTime = 0.05f;
 Vector3 direction = transform.position + transform.forward * DashSpeed;
 transform.position = Vector3.Slerp(transform.position, direction, DashVelocity);
+//transform.position = Vector3.Lerp(transform.position,transform.forward * DashVelocity, DashTime);
 */
+//GetComponent<Rigidbody>().AddForce(transform.forward * DashVelocity);
+//Vector3.Lerp(transform.position , transform.forward * DashVelocity, 0.05f);
