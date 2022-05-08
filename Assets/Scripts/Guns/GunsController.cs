@@ -11,21 +11,21 @@ public class GunsController : MonoBehaviour
 {
     [SerializeField] private Gun _gravityGun;
     [SerializeField] private Gun _physicalGun;
-    [SerializeField] private GameObject _deformationGun;
-    [SerializeField] private GameObject _etherCrystalGun;
+    [SerializeField] private Gun _deformationGun;
+    [SerializeField] private Gun _etherCrystalGun;
 
     [SerializeField] private TMP_Text _gunName;
 
-    private List<GameObject> _guns = new();
+    private List<Gun> _guns = new();
 
     private void Start()
     {
         _gravityGun.gameObject.SetActive(true);
         _gunName.text = "Текущее оружее: " + _gravityGun.GetName;
         
-        _guns.AddRange(new List<GameObject>
+        _guns.AddRange(new List<Gun>
         {
-            _gravityGun.gameObject, _physicalGun.gameObject, 
+            _gravityGun, _physicalGun, 
             _deformationGun, _etherCrystalGun
         });
     }
@@ -34,13 +34,13 @@ public class GunsController : MonoBehaviour
     {
         foreach (var gun in _guns)
         {
-            gun.SetActive(false);
+            gun.gameObject.SetActive(false);
         }
 
         yield return null;
     }
 
-    private void SetWeapon(GameObject gun, string weaponName)
+    private void SetWeapon(Component gun, string weaponName)
     {
         StartCoroutine(DisableGuns());
         gun.gameObject.SetActive(true);
@@ -51,12 +51,12 @@ public class GunsController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            SetWeapon(_gravityGun.gameObject, _gravityGun.GetName);
+            SetWeapon(_gravityGun, _gravityGun.GetName);
         }
 
         if (Input.GetKey(KeyCode.Alpha2))
         {
-            SetWeapon(_physicalGun.gameObject, _physicalGun.GetName);
+            SetWeapon(_physicalGun, _physicalGun.GetName);
         }
 
         if (Input.GetKey(KeyCode.Alpha3))

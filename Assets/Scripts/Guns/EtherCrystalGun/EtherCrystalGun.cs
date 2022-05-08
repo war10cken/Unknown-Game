@@ -1,7 +1,8 @@
+using Guns;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EtherCrystalGun : MonoBehaviour
+public class EtherCrystalGun : Gun
 {
     //
     [SerializeField] private Slider _energy;
