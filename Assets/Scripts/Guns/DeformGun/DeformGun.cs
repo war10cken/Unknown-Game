@@ -1,5 +1,9 @@
+using System;
+using DG.Tweening;
+using Guns;
 using UnityEngine;
-public class DeformGun : MonoBehaviour
+
+public class DeformGun : Gun
 {
     [Header("Raycast")]
     public float LaserLenght = 100f;
@@ -20,8 +24,10 @@ public class DeformGun : MonoBehaviour
     {
         Ray ray = new(RayOriginMark.transform.position, RayOriginMark.transform.forward);
         Debug.DrawRay(ray.origin, ray.direction * LaserLenght, Color.red);
+
         if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButton("Fire1"))
         {
+            TrackMouse(hit);
             ShowLaser();
             if (hit.collider.gameObject.GetComponent<Rigidbody>() != null)
             {
@@ -32,6 +38,14 @@ public class DeformGun : MonoBehaviour
         }else
         {DestructLaser();}
     }
+
+    protected override void TrackMouse(RaycastHit hit)
+    {
+        transform.DORotateQuaternion(new Quaternion(0, 0, 0, 0), 1f);
+        Vector3 direction = hit.point - transform.position;
+        transform.rotation = Quaternion.LookRotation(direction);
+    }
+
     void HitParticle(RaycastHit hit)
     {
         ParticleSystem instantiatedParticle;
