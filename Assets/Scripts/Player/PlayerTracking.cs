@@ -7,7 +7,7 @@ public class PlayerTracking : MonoBehaviour
     RaycastHit hit;
     [Header("Velocities")]
     public float PlayerTrackingSpeed = 0.2f;
-    void FixedUpdate()
+    void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -16,13 +16,13 @@ public class PlayerTracking : MonoBehaviour
         {
             target = (hit.point - transform.position);
             target = new Vector3(target.x, 0, target.z);
-            transform.forward = Vector3.Slerp(transform.forward, target, PlayerTrackingSpeed);
+            transform.right = Vector3.Slerp(transform.right, target, PlayerTrackingSpeed * Time.deltaTime); //transform.forward
         }
         else
         {
             target = ray.direction;
             target = new Vector3(target.x, 0, target.z);
-            transform.forward = Vector3.Slerp(transform.forward, target, PlayerTrackingSpeed);
+            transform.right = Vector3.Slerp(transform.right, target, PlayerTrackingSpeed * Time.deltaTime);
         }
         Debug.DrawRay(ray.origin, ray.direction * LaserLenght, Color.cyan);
     }

@@ -30,6 +30,5 @@ public class Jump : MonoBehaviour
         {
             JumpTimer += (int)(1 / Time.deltaTime);
         }
-        //Debug.Log(JumpTimer);
     }
 }

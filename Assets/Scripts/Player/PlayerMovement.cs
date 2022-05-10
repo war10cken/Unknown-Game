@@ -1,5 +1,4 @@
 using UnityEngine;
-using DG.Tweening;
 public class PlayerMovement : MonoBehaviour
 {
     public float PlayerSpeed = 5f;
@@ -11,36 +10,37 @@ public class PlayerMovement : MonoBehaviour
     public float ForceCollision = 5f;
     RaycastHit Hit;
     public Vector3 CollisionRayOrigin;
+    //[Header("RigidBody")]
     void Update()
     {
         float HorizontalAxis = Input.GetAxisRaw("Horizontal");
         float VerticalAxis = Input.GetAxisRaw("Vertical");
 
+        // Проверка на IsJumped.
         if (Physics.Raycast(transform.position + IfJumpedRayPositionOffset, Vector3.down, MaxRayDistance))
         {
             CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
-            // Полуфизическое Движение.
-            Ray DistanceToCollisionRay = new(transform.position + CollisionRayOrigin, CharacterMoveDirection);
-            if (!Physics.Raycast(DistanceToCollisionRay, out Hit, RayLenght) && !Input.GetButton("Fire3") && !Input.GetButton("Jump") )
+            Ray[] DistanceToCollisionRays = new Ray[4];
+            for (int i = 0; i < 4; i++)
             {
-                GetComponent<Rigidbody>().velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
-            }
-            else if (Physics.Raycast(DistanceToCollisionRay, out Hit, RayLenght))
-            {
-                Rigidbody hitRigidBody = Hit.collider.gameObject.GetComponent<Rigidbody>();
-                if (hitRigidBody != null)
+                DistanceToCollisionRays[i] = new(transform.position + CollisionRayOrigin + Vector3.up * i, CharacterMoveDirection);
+                Debug.DrawRay(transform.position + CollisionRayOrigin - Vector3.up * i / 2, CharacterMoveDirection * RayLenght, Color.black);
+                if (!Physics.Raycast(DistanceToCollisionRays[i], RayLenght))
                 {
-                    hitRigidBody.AddForce(CharacterMoveDirection.normalized * ForceCollision);
+                    if (!Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
+                    {
+                        // Полуфизическое Движение.
+                        GetComponent<Rigidbody>().velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
+                    }
                 }
-                //Debug.Log(hitRigidBody);
             }
+            // Луч проверки пользователя на прыжок.
+            Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
         }
         // Проверка столкновений с коллайдерами.
         Debug.DrawRay(transform.position + CollisionRayOrigin, CharacterMoveDirection * RayLenght, Color.black);
         // Направление движения пользователя.
         Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
-        // Луч проверки пользователя на прыжок.
-        Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
     }
 }
 
@@ -67,3 +67,20 @@ PlayerRigidbody.AddForce(CharacterMoveDirection.normalized * PlayerSpeed);
 transform.position += CharacterMoveDirection.normalized * PlayerSpeed;
 */
 //public float MaxPlayerSpeed = 1000f;
+
+// Луч проверки пользователя на прыжок.
+//Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
+//&& !Input.GetButton("Fire3") ) //&& !Input.GetButton("Jump")
+
+/*09.05.2022
+Ray DistanceToCollisionRay = new(transform.position + CollisionRayOrigin, CharacterMoveDirection);
+// Проверка на расстояние до любого коллайдера.
+if ( !Physics.Raycast(DistanceToCollisionRay, out Hit, RayLenght) )
+{
+    if ( !Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
+    {
+        // Полуфизическое Движение.
+        GetComponent<Rigidbody>().velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
+    }
+}
+*/
