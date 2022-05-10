@@ -19,7 +19,8 @@ public class EtherCrystalGun : Gun
     [Header("ShowingRay")]
     public GameObject BeamGameObject;
     public GameObject RayOriginMark;
-    void FixedUpdate()
+    LineRenderer GunBeam;
+    void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -39,11 +40,14 @@ public class EtherCrystalGun : Gun
         }
         else if (hittedObj != null)
         {
+            //
+            GunBeam.SetPosition(0, RayOriginMark.transform.position);
+            //
             if (hittedObj.GetComponent<Renderer>().material.color.a == 0.2f)
             {
                 TimeCounter += 1 / Time.fixedDeltaTime;
                 //Debug.Log(TimeCounter);
-                if (TimeCounter > 10000 && hittedObj != null)
+                if (TimeCounter > 10000 )// && hittedObj != null)
                 {
                     hittedObj.GetComponent<BoxCollider>().enabled = true;
 
@@ -53,23 +57,24 @@ public class EtherCrystalGun : Gun
                     hittedObj.GetComponent<Renderer>().material.color = Color;
                     hittedObj = null;
                     TimeCounter = 0;
+                    //
+                    DestructLaser();
+                    //
                 }
             }
         }
     }
     void ShowLaser()
     {
-        LineRenderer gunBeam;
+        GunBeam = BeamGameObject.GetComponent<LineRenderer>();
 
-        gunBeam = BeamGameObject.GetComponent<LineRenderer>();
+        GunBeam.startWidth = 0.2f;
+        GunBeam.endWidth = 0.1f;
 
-        gunBeam.startWidth = 0.2f;
-        gunBeam.endWidth = 0.1f;
+        GunBeam.useWorldSpace = true;
 
-        gunBeam.useWorldSpace = true;
-
-        gunBeam.SetPosition(0, RayOriginMark.transform.position);
-        gunBeam.SetPosition(1, hit.point);
+        GunBeam.SetPosition(0, RayOriginMark.transform.position);
+        GunBeam.SetPosition(1, hit.point);
         //Debug.Log(hit.point);   
     }
     void DestructLaser()

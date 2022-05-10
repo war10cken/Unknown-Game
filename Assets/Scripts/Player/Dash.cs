@@ -3,12 +3,12 @@ using DG.Tweening;
 public class Dash : MonoBehaviour
 {
     public float DashVelocity = 50f;
-    private int Counter = 0;
-    void Update()
+    public static int Counter = 4000;
+    void FixedUpdate()
     {
-        if (Input.GetButtonDown("Fire3") && Counter >= 4000)
+        if (Input.GetButton("Fire3") && Counter >= 4000)
         {
-            GetComponent<Rigidbody>().velocity += transform.forward * DashVelocity;
+            GetComponent<Rigidbody>().velocity += transform.right * DashVelocity; // forward
             Counter = 0;
         }
         if (Counter > 4000) 
