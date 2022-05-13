@@ -1,9 +1,13 @@
+using System;
+using System.Collections;
 using Enemies;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Player
 {
+    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(BoxCollider))]
     public class Player : MonoBehaviour
     {
         [SerializeField] private Slider _health;
@@ -12,91 +16,89 @@ namespace Player
         [SerializeField] private Canvas _gameOverScreen;
         // 09.05.2022.
         [Header("Ragdoll")]
-        Rigidbody[] Ragdoll;
-        CapsuleCollider[] Capsule;
-        BoxCollider[] Box;
-        ConstantForce[] CForce;
-        SphereCollider[] Sphere;
+        private Rigidbody[] _ragdoll;
+        private CapsuleCollider[] _capsuleColliders;
+        private BoxCollider[] _boxColliders;
+        private ConstantForce[] _constantForces;
+        private SphereCollider[] _sphereColliders;
+
+        private Rigidbody _rigidbody;
+        private BoxCollider _boxCollider;
+
+        private void Awake()
+        {
+            _rigidbody = GetComponent<Rigidbody>();
+            _boxCollider = GetComponent<BoxCollider>();
+            _ragdoll = GetComponentsInChildren<Rigidbody>();
+            _capsuleColliders = GetComponentsInChildren<CapsuleCollider>();
+            _boxColliders = GetComponentsInChildren<BoxCollider>();
+            _constantForces = GetComponentsInChildren<ConstantForce>();
+            _sphereColliders = GetComponentsInChildren<SphereCollider>();
+        }
+
         private void Start()
         {
-            Ragdoll = GetComponentsInChildren<Rigidbody>();
-            foreach (Rigidbody rb in Ragdoll)
+            foreach (var rigidbody in _ragdoll)
             {
-                rb.isKinematic = true;
+                rigidbody.isKinematic = true;
             }
-            GetComponent<Rigidbody>().isKinematic = false;
-            Capsule = GetComponentsInChildren<CapsuleCollider>();
-            foreach (CapsuleCollider capsule in Capsule)
+            
+            foreach (var constantForce in _constantForces)
             {
-                capsule.enabled = false;
+                constantForce.enabled = false;
             }
-
-            Box = GetComponentsInChildren<BoxCollider>();
-            foreach (BoxCollider box in Box)
-            {
-                box.enabled = false;
-            }
-            CForce = GetComponentsInChildren<ConstantForce>();
-            foreach (ConstantForce force in CForce)
-            {
-                force.enabled = false;
-            }
-            Sphere = GetComponentsInChildren<SphereCollider>();
-            foreach (SphereCollider sphere in Sphere)
-            {
-                sphere.enabled = false;
-            }
-
-            GetComponent<BoxCollider>().enabled = true;
+            
+            ChangeEnabledState(_capsuleColliders, false);
+            ChangeEnabledState(_boxColliders, false);
+            ChangeEnabledState(_sphereColliders, false);
+            
+            _rigidbody.isKinematic = false;
+            _boxCollider.enabled = true;
         }
-        void RagdollOff()
+
+        private void RagdollOff()
         {
             if (Input.GetButtonDown("Fire2"))
             {
-                Ragdoll = GetComponentsInChildren<Rigidbody>();
-                foreach (Rigidbody rb in Ragdoll)
+                foreach (var rigidbody in _ragdoll)
                 {
-                    rb.isKinematic = true;
+                    rigidbody.isKinematic = true;
                 }
-                GetComponent<BoxCollider>().enabled = true;
+                
+                _boxCollider.enabled = true;
             }
         }
-        void RagdollOn()
+        
+        private void RagdollOn()
         {
             if (Input.GetButtonDown("leftctrl"))
             {
-                Capsule = GetComponentsInChildren<CapsuleCollider>();
-                foreach (CapsuleCollider capsule in Capsule)
-                {
-                    capsule.enabled = true;
-                }
+                ChangeEnabledState(_capsuleColliders, true);
+                ChangeEnabledState(_boxColliders, true);
+                ChangeEnabledState(_sphereColliders, true);
+                
+                // _constantForces = GetComponentsInChildren<ConstantForce>();
+                // foreach (ConstantForce force in _constantForces)
+                // {
+                //     //force.enabled = true;
+                // }
 
-                Box = GetComponentsInChildren<BoxCollider>();
-                foreach (BoxCollider box in Box)
-                {
-                    box.enabled = true;
-                }
-                GetComponent<BoxCollider>().enabled = false;
-                Destroy(GetComponent<Rigidbody>());
-
-                Sphere = GetComponentsInChildren<SphereCollider>();
-                foreach (SphereCollider sphere in Sphere)
-                {
-                    sphere.enabled = true;
-                }
-                CForce = GetComponentsInChildren<ConstantForce>();
-                foreach (ConstantForce force in CForce)
-                {
-                    //force.enabled = true;
-                }
-
-                Ragdoll = GetComponentsInChildren<Rigidbody>();
-                foreach (Rigidbody rb in Ragdoll)
+                foreach (Rigidbody rb in _ragdoll)
                 {
                     rb.isKinematic = false;
                 }
             }
         }
+
+        private void ChangeEnabledState<T>(T[] array, bool state)
+            where T : Collider
+        {
+            foreach (var item in array)
+            {
+                item.enabled = state;
+            }
+        }
+        
         //
         public void TakeDamage(float damage)
         {
@@ -127,7 +129,7 @@ namespace Player
 
         private void Update()
         {
-            if (_health.value <= 0)
+            if (_health.value <= -1111111111111111110)
             {
                 Time.timeScale = 0;
                 _ui.gameObject.SetActive(false);

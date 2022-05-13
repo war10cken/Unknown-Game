@@ -4,7 +4,7 @@ namespace Guns.GravityGun
 {
     public class GravityGun : Gun
     {
-        private void FixedUpdate()
+        private void Update()
         {
             var item = GrabItem();
             

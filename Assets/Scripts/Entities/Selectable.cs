@@ -5,7 +5,7 @@ using UnityEngine;
 
 #endregion
 
-namespace Guns
+namespace Entities
 {
     [RequireComponent(typeof(Rigidbody))]
     public class Selectable : MonoBehaviour
@@ -25,6 +25,11 @@ namespace Guns
                 if (other.gameObject.TryGetComponent(out Enemy enemy))
                 {
                     enemy.TakeDamage(_damage);
+                }
+
+                if (other.gameObject.TryGetComponent(out Ground ground))
+                {
+                    _rigidbody.AddForce(transform.up * 1000f, ForceMode.Force);
                 }
                 
                 if (_rigidbody.mass > other.rigidbody.mass)

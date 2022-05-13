@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class EtherCrystalGun : Gun
 {
     //
-    [SerializeField] private Slider _energy;
+    // [SerializeField] private Slider _energy;
     Color Color;
     float Store;
     //
