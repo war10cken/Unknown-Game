@@ -15,13 +15,15 @@ public class GunsController : MonoBehaviour
     [SerializeField] private Gun _etherCrystalGun;
 
     [SerializeField] private TMP_Text _gunName;
+    [SerializeField] private TMP_Text _hotKeys;
 
     private List<Gun> _guns = new();
 
     private void Start()
     {
         _gravityGun.gameObject.SetActive(true);
-        _gunName.text = "Текущее оружее: " + _gravityGun.GetName;
+        _gunName.text = "Текущее оружее: " + _gravityGun.Name;
+        _hotKeys.text = _gravityGun.HotKeys;
         
         _guns.AddRange(new List<Gun>
         {
@@ -30,43 +32,42 @@ public class GunsController : MonoBehaviour
         });
     }
 
-    private IEnumerator DisableGuns()
+    private void DisableGuns()
     {
         foreach (var gun in _guns)
         {
             gun.gameObject.SetActive(false);
         }
-
-        yield return null;
     }
 
-    private void SetWeapon(Component gun, string weaponName)
+    private void SetWeapon(Component gun, string weaponName, string hotKeys)
     {
-        StartCoroutine(DisableGuns());
+        DisableGuns();
         gun.gameObject.SetActive(true);
         _gunName.text = "Текущее оружее: " + weaponName;
+        _hotKeys.text = hotKeys;
     }
     
     private void Update()
     {
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            SetWeapon(_gravityGun, _gravityGun.GetName);
+            SetWeapon(_gravityGun, _gravityGun.Name, _gravityGun.HotKeys);
         }
 
         if (Input.GetKey(KeyCode.Alpha2))
         {
-            SetWeapon(_physicalGun, _physicalGun.GetName);
+            SetWeapon(_physicalGun, _physicalGun.Name, _physicalGun.HotKeys);
         }
 
         if (Input.GetKey(KeyCode.Alpha3))
         {
-            SetWeapon(_etherCrystalGun, "Эфирный кристалл");
+            SetWeapon(_etherCrystalGun, _etherCrystalGun.Name, _etherCrystalGun.HotKeys);
         }
 
         if (Input.GetKey(KeyCode.Alpha4))
         {
-            SetWeapon(_deformationGun, "Деформирующая пушка");
+            SetWeapon(_deformationGun, _deformationGun.Name, _deformationGun.HotKeys);
         }
     }
 }
