@@ -27,6 +27,7 @@ public class DeformGun : Gun
         if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButton("Fire1"))
         {
             ShowLaser();
+            LaserSoundOn();
             if (hit.collider.gameObject.GetComponent<Rigidbody>() != null)
             {
                 Deformation(ray);
@@ -34,7 +35,20 @@ public class DeformGun : Gun
                 HitParticle(hit);
             }            
         }else
-        {DestructLaser();}
+        {DestructLaser(); LaserSoundOff();}
+    }
+    void LaserSoundOn() 
+    {
+        AudioSource laserSound = GetComponent<AudioSource>();
+        if (!laserSound.isPlaying)
+        {
+            laserSound.Play();
+        }
+    }
+    void LaserSoundOff()
+    {
+        AudioSource laserSound = GetComponent<AudioSource>();
+        laserSound.Stop();
     }
 
     void HitParticle(RaycastHit hit)
@@ -99,9 +113,19 @@ public class DeformGun : Gun
         deformingMesh.RecalculateBounds();
         //deformingMesh.RecalculateNormals();
 
-        Destroy(deformingGameObject.GetComponent<BoxCollider>());
-        deformingGameObject.AddComponent<BoxCollider>();
-        //deformingGameObject.AddComponent<MeshCollider>().convex = true;
+        if (deformingGameObject.GetComponent<BoxCollider>() != null)
+        {
+            Destroy(deformingGameObject.GetComponent<BoxCollider>());
+        }
+        if (deformingGameObject.GetComponent<MeshCollider>() == null)
+        {
+            deformingGameObject.AddComponent<MeshCollider>().convex = true;
+        }
+        if (deformingGameObject.GetComponent<MeshCollider>() != null)
+        {
+            deformingGameObject.GetComponent<MeshCollider>().convex = false;
+            deformingGameObject.GetComponent<MeshCollider>().convex = true;
+        }
     }
 }
 //public float LaserSpeedRotation = 5f;
@@ -136,3 +160,7 @@ else
  * public float BeamDissapeareTime = 0.2f;
 */
 //if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButton("Fire1") && hit.collider.gameObject.layer == 6)
+
+//deformingGameObject.AddComponent<MeshCollider>().convex = true;
+//Destroy(deformingGameObject.GetComponent<BoxCollider>());
+//deformingGameObject.AddComponent<BoxCollider>();

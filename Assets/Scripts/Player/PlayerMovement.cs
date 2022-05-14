@@ -10,7 +10,12 @@ public class PlayerMovement : MonoBehaviour
     public float ForceCollision = 5f;
     RaycastHit Hit;
     public Vector3 CollisionRayOrigin;
-    //[Header("RigidBody")]
+    [Header("Sounds")]
+    AudioSource FootSteps;
+    private void Start()
+    {
+        FootSteps = GetComponent<AudioSource>();
+    }
     void Update()
     {
         float HorizontalAxis = Input.GetAxisRaw("Horizontal");
@@ -24,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
             for (int i = 0; i < 4; i++)
             {
                 DistanceToCollisionRays[i] = new(transform.position + CollisionRayOrigin + Vector3.up * i, CharacterMoveDirection);
+                // Проверка столкновений с коллайдерами.
                 Debug.DrawRay(transform.position + CollisionRayOrigin - Vector3.up * i / 2, CharacterMoveDirection * RayLenght, Color.black);
                 if (!Physics.Raycast(DistanceToCollisionRays[i], RayLenght))
                 {
@@ -32,13 +38,20 @@ public class PlayerMovement : MonoBehaviour
                         // Полуфизическое Движение.
                         GetComponent<Rigidbody>().velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
                     }
+                    // FootStep sound.
+                    if (CharacterMoveDirection != Vector3.zero && FootSteps.isPlaying == false) 
+                    {
+                        FootSteps.Play();
+                    }else if (CharacterMoveDirection == Vector3.zero)
+                    {
+                        FootSteps.Stop();
+                    }
+                    //
                 }
             }
             // Луч проверки пользователя на прыжок.
             Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
         }
-        // Проверка столкновений с коллайдерами.
-        Debug.DrawRay(transform.position + CollisionRayOrigin, CharacterMoveDirection * RayLenght, Color.black);
         // Направление движения пользователя.
         Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
     }

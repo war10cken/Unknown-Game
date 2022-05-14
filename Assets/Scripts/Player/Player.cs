@@ -58,7 +58,7 @@ namespace Player
 
         private void RagdollOff()
         {
-            if (Input.GetButtonDown("Fire2"))
+            if (Input.GetButtonDown("NONE"))
             {
                 foreach (var rigidbody in _ragdoll)
                 {
@@ -71,7 +71,7 @@ namespace Player
         
         private void RagdollOn()
         {
-            if (Input.GetButtonDown("leftctrl"))
+            if (Input.GetButtonDown("CTRL"))
             {
                 ChangeEnabledState(_capsuleColliders, true);
                 ChangeEnabledState(_boxColliders, true);
@@ -87,6 +87,10 @@ namespace Player
                 {
                     rb.isKinematic = false;
                 }
+                GetComponent<PlayerMovement>().enabled = false;
+                GetComponent<PlayerTracking>().enabled = false;
+                GetComponent<Jump>().enabled = false;
+                GetComponent<Dash>().enabled = false;
             }
         }
 
