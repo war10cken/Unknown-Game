@@ -51,7 +51,7 @@ namespace Player
         }
         void RagdollOff()
         {
-            if (Input.GetButtonDown("Fire2"))
+            if (Input.GetButtonDown("NONE"))
             {
                 Ragdoll = GetComponentsInChildren<Rigidbody>();
                 foreach (Rigidbody rb in Ragdoll)
@@ -63,7 +63,7 @@ namespace Player
         }
         void RagdollOn()
         {
-            if (Input.GetButtonDown("leftctrl"))
+            if (Input.GetButtonDown("CTRL"))
             {
                 Capsule = GetComponentsInChildren<CapsuleCollider>();
                 foreach (CapsuleCollider capsule in Capsule)
@@ -95,6 +95,10 @@ namespace Player
                 {
                     rb.isKinematic = false;
                 }
+                GetComponent<PlayerMovement>().enabled = false;
+                GetComponent<PlayerTracking>().enabled = false;
+                GetComponent<Jump>().enabled = false;
+                GetComponent<Dash>().enabled = false;
             }
         }
         //
