@@ -1,24 +1,27 @@
+using System;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class HeroStuckTeleport : MonoBehaviour
 {
     public Vector3 TeleportPosition = new(0.5f,-1f,-0.4f);
     public GameObject EtherCrystalGun;
     public GameObject TargetObject;
-    void Update()
+
+    private BoxCollider _boxCollider;
+
+    private void Awake()
+    {
+        _boxCollider = GetComponent<BoxCollider>();
+    }
+
+    private void Update()
     {
         transform.position = TargetObject.transform.position;
-        if (EtherCrystalGun.GetComponent<EtherCrystalGun>().TimeCounter == 0)
-        {
-            GetComponent<BoxCollider>().enabled = true;
-        }
-        else
-        {
-            GetComponent<BoxCollider>().enabled = false;
-        }
+        _boxCollider.enabled = EtherCrystalGun.GetComponent<EtherCrystalGun>().TimeCounter == 0;
         //Debug.Log(EtherCrystalGun.activeInHierarchy);
     }
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     { 
         if (collision.gameObject.layer == 2)
         {
