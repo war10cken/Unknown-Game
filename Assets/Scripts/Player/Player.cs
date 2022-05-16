@@ -8,6 +8,10 @@ namespace Player
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(BoxCollider))]
+    [RequireComponent(typeof(PlayerMovement))]
+    [RequireComponent(typeof(PlayerTracking))]
+    [RequireComponent(typeof(Jump))]
+    [RequireComponent(typeof(Dash))]
     public class Player : MonoBehaviour
     {
         [SerializeField] private Slider _health;
@@ -24,6 +28,10 @@ namespace Player
 
         private Rigidbody _rigidbody;
         private BoxCollider _boxCollider;
+        private PlayerMovement _playerMovement;
+        private PlayerTracking _playerTracking;
+        private Jump _jump;
+        private Dash _dash;
 
         private void Awake()
         {
@@ -87,10 +95,11 @@ namespace Player
                 {
                     rb.isKinematic = false;
                 }
-                GetComponent<PlayerMovement>().enabled = false;
-                GetComponent<PlayerTracking>().enabled = false;
-                GetComponent<Jump>().enabled = false;
-                GetComponent<Dash>().enabled = false;
+                
+                _playerMovement.enabled = false;
+                _playerTracking.enabled = false;
+                _jump.enabled = false;
+                _dash.enabled = false;
             }
         }
 
@@ -133,7 +142,7 @@ namespace Player
 
         private void Update()
         {
-            if (_health.value <= -1111111111111111110)
+            if (_health.value <= 0)
             {
                 Time.timeScale = 0;
                 _ui.gameObject.SetActive(false);

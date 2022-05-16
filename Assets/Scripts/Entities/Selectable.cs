@@ -27,11 +27,6 @@ namespace Entities
                     enemy.TakeDamage(_damage);
                 }
 
-                if (other.gameObject.TryGetComponent(out Ground ground))
-                {
-                    _rigidbody.AddForce(transform.up * 1000f, ForceMode.Force);
-                }
-                
                 if (_rigidbody.mass > other.rigidbody.mass)
                 {
                     Destroy(other.gameObject);

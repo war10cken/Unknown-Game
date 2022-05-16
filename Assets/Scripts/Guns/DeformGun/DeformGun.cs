@@ -1,7 +1,9 @@
+using System;
 using DG.Tweening;
 using Guns;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class DeformGun : Gun
 {
     [Header("Raycast")]
@@ -19,6 +21,14 @@ public class DeformGun : Gun
     [Header("Particles")]
     public ParticleSystem HitPointParticle;
     public float ParticleDissapeareTime = 1f;
+
+    private AudioSource _laserSound;
+    
+    private void Start()
+    {
+        _laserSound = GetComponent<AudioSource>();
+    }
+
     void Update()
     {
         Ray ray = new(RayOriginMark.transform.position, RayOriginMark.transform.forward);
@@ -27,28 +37,31 @@ public class DeformGun : Gun
         if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButton("Fire1"))
         {
             ShowLaser();
-            LaserSoundOn();
+            
             if (hit.collider.gameObject.GetComponent<Rigidbody>() != null)
             {
+                LaserSoundOn();
                 Deformation(ray);
                 Addforce(ray);
                 HitParticle(hit);
             }            
-        }else
-        {DestructLaser(); LaserSoundOff();}
+        }
+        else
+        {
+            DestructLaser();
+            LaserSoundOff();
+        }
     }
     void LaserSoundOn() 
     {
-        AudioSource laserSound = GetComponent<AudioSource>();
-        if (!laserSound.isPlaying)
+        if (!_laserSound.isPlaying)
         {
-            laserSound.Play();
+            _laserSound.Play();
         }
     }
     void LaserSoundOff()
     {
-        AudioSource laserSound = GetComponent<AudioSource>();
-        laserSound.Stop();
+        _laserSound.Stop();
     }
 
     void HitParticle(RaycastHit hit)
@@ -113,18 +126,21 @@ public class DeformGun : Gun
         deformingMesh.RecalculateBounds();
         //deformingMesh.RecalculateNormals();
 
-        if (deformingGameObject.GetComponent<BoxCollider>() != null)
+        var boxCollider = deformingGameObject.GetComponent<BoxCollider>();
+        var meshCollider = deformingGameObject.GetComponent<MeshCollider>();
+        
+        if (boxCollider != null)
         {
-            Destroy(deformingGameObject.GetComponent<BoxCollider>());
+            Destroy(boxCollider);
         }
-        if (deformingGameObject.GetComponent<MeshCollider>() == null)
+        if (meshCollider == null)
         {
             deformingGameObject.AddComponent<MeshCollider>().convex = true;
         }
-        if (deformingGameObject.GetComponent<MeshCollider>() != null)
+        if (meshCollider != null)
         {
-            deformingGameObject.GetComponent<MeshCollider>().convex = false;
-            deformingGameObject.GetComponent<MeshCollider>().convex = true;
+            meshCollider.convex = false;
+            meshCollider.convex = true;
         }
     }
 }
