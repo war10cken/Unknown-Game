@@ -66,6 +66,8 @@ namespace Guns
             {
                 if (_currentItem is not null)
                 {
+                    Cursor.visible = false;
+                    
                     ShowBeam(_currentItem);
                     _beam.SetActive(true);
                     
@@ -99,8 +101,15 @@ namespace Guns
                 }
             }
 
+            if (_energy.value == 0)
+            {
+                _beam.SetActive(false);
+            }
+
             if (_leftMouseClick == 0)
             {
+                Cursor.visible = true;
+                
                 _energy.value += _energyValue;
                 _beam.SetActive(false);
                 _currentItem = null;
