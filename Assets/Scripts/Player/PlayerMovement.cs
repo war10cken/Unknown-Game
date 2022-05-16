@@ -39,10 +39,6 @@ public class PlayerMovement : MonoBehaviour
                     {
                         // Полуфизическое Движение.
                         ThisRb.velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
-
-                        transform.position += CharacterMoveDirection;
-                        transform.Translate(CharacterMoveDirection);
-                        ThisRb.AddForce(PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized);
                     }
                     // FootStep sound.
                     if (CharacterMoveDirection != Vector3.zero && FootSteps.isPlaying == false) 
