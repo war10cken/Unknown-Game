@@ -133,15 +133,15 @@ namespace Player
 
         private void Update()
         {
-            if (_health.value <= -1111111111111111110)
+            if (_health.value <= 0)
             {
                 Time.timeScale = 0;
                 _ui.gameObject.SetActive(false);
                 _gameOverScreen.gameObject.SetActive(true);
             }
             // 09.05.2022.
-            RagdollOff();
-            RagdollOn();
+            //RagdollOff();
+            //RagdollOn();
             //
         }
     }
