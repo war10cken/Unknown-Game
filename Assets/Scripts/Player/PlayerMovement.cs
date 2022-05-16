@@ -1,6 +1,4 @@
 using UnityEngine;
-
-[RequireComponent(typeof(AudioSource))]
 public class PlayerMovement : MonoBehaviour
 {
     public float PlayerSpeed = 5f;
@@ -14,16 +12,18 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 CollisionRayOrigin;
     [Header("Sounds")]
     AudioSource FootSteps;
-    private void Start()
+    Rigidbody ThisRb;
+    private void Awake()
     {
         FootSteps = GetComponent<AudioSource>();
+        ThisRb = GetComponent<Rigidbody>();
     }
     void Update()
     {
         float HorizontalAxis = Input.GetAxisRaw("Horizontal");
         float VerticalAxis = Input.GetAxisRaw("Vertical");
 
-        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ IsJumped.
+        // Проверка на IsJumped.
         if (Physics.Raycast(transform.position + IfJumpedRayPositionOffset, Vector3.down, MaxRayDistance))
         {
             CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
@@ -31,14 +31,18 @@ public class PlayerMovement : MonoBehaviour
             for (int i = 0; i < 4; i++)
             {
                 DistanceToCollisionRays[i] = new(transform.position + CollisionRayOrigin + Vector3.up * i, CharacterMoveDirection);
-                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+                // Проверка столкновений с коллайдерами.
                 Debug.DrawRay(transform.position + CollisionRayOrigin - Vector3.up * i / 2, CharacterMoveDirection * RayLenght, Color.black);
                 if (!Physics.Raycast(DistanceToCollisionRays[i], RayLenght))
                 {
                     if (!Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
                     {
-                        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
-                        GetComponent<Rigidbody>().velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
+                        // Полуфизическое Движение.
+                        ThisRb.velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
+
+                        transform.position += CharacterMoveDirection;
+                        transform.Translate(CharacterMoveDirection);
+                        ThisRb.AddForce(PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized);
                     }
                     // FootStep sound.
                     if (CharacterMoveDirection != Vector3.zero && FootSteps.isPlaying == false) 
@@ -51,10 +55,10 @@ public class PlayerMovement : MonoBehaviour
                     //
                 }
             }
-            // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
+            // Луч проверки пользователя на прыжок.
             Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
         }
-        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+        // Направление движения пользователя.
         Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
     }
 }
@@ -75,26 +79,26 @@ public class PlayerMovement : MonoBehaviour
                 }
 */
 /*
-// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+// Физическое движение.
 PlayerRigidbody.velocity = CharacterMoveDirection.normalized * PlayerSpeed;
 PlayerRigidbody.AddForce(CharacterMoveDirection.normalized * PlayerSpeed);
-// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+// Векторное движение.
 transform.position += CharacterMoveDirection.normalized * PlayerSpeed;
 */
 //public float MaxPlayerSpeed = 1000f;
 
-// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
+// Луч проверки пользователя на прыжок.
 //Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
 //&& !Input.GetButton("Fire3") ) //&& !Input.GetButton("Jump")
 
 /*09.05.2022
 Ray DistanceToCollisionRay = new(transform.position + CollisionRayOrigin, CharacterMoveDirection);
-// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+// Проверка на расстояние до любого коллайдера.
 if ( !Physics.Raycast(DistanceToCollisionRay, out Hit, RayLenght) )
 {
     if ( !Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
     {
-        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+        // Полуфизическое Движение.
         GetComponent<Rigidbody>().velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
     }
 }

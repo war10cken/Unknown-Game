@@ -149,8 +149,8 @@ namespace Player
                 _gameOverScreen.gameObject.SetActive(true);
             }
             // 09.05.2022.
-            RagdollOff();
-            RagdollOn();
+            //RagdollOff();
+            //RagdollOn();
             //
         }
     }
