@@ -12,7 +12,8 @@ public class PlayerTracking : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         Vector3 target;
-        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit))
+        LayerMask Mask = ~LayerMask.GetMask("Player");
+        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, Mathf.Infinity, Mask))
         {
             target = (hit.point - transform.position);
             target = new Vector3(target.x, 0, target.z);

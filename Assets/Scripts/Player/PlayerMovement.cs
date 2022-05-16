@@ -12,9 +12,11 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 CollisionRayOrigin;
     [Header("Sounds")]
     AudioSource FootSteps;
-    private void Start()
+    Rigidbody ThisRb;
+    private void Awake()
     {
         FootSteps = GetComponent<AudioSource>();
+        ThisRb = GetComponent<Rigidbody>();
     }
     void Update()
     {
@@ -36,7 +38,11 @@ public class PlayerMovement : MonoBehaviour
                     if (!Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
                     {
                         // Полуфизическое Движение.
-                        GetComponent<Rigidbody>().velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
+                        ThisRb.velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
+
+                        transform.position += CharacterMoveDirection;
+                        transform.Translate(CharacterMoveDirection);
+                        ThisRb.AddForce(PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized);
                     }
                     // FootStep sound.
                     if (CharacterMoveDirection != Vector3.zero && FootSteps.isPlaying == false) 
