@@ -15,7 +15,7 @@ public class Turret : MonoBehaviour
     [Header("HP")]
     [SerializeField] private Slider _health;
     [SerializeField] private Player.Player _player;
-    void FixedUpdate()
+    void Update()
     {
         Vector3 DirectionToPlayer = (Player.transform.position - transform.position).normalized;
         Ray Ray = new(transform.position, DirectionToPlayer * DistanceDetection);
@@ -40,7 +40,7 @@ public class Turret : MonoBehaviour
     {
         Vector3 DirectionToPlayer = (Player.transform.position - transform.position);
         Quaternion lookRotation = Quaternion.LookRotation(DirectionToPlayer);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, TurretRotationSpeed); //* Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, TurretRotationSpeed * Time.deltaTime);
     }
     void ShowLaser(GameObject RayOriginMark1)
     {

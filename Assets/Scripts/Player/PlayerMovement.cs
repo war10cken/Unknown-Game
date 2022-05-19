@@ -28,11 +28,11 @@ public class PlayerMovement : MonoBehaviour
         {
             CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
             Ray[] DistanceToCollisionRays = new Ray[4];
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 1; i++)
             {
-                DistanceToCollisionRays[i] = new(transform.position + CollisionRayOrigin + Vector3.up * i, CharacterMoveDirection);
+                DistanceToCollisionRays[i] = new( transform.position + CollisionRayOrigin, RayLenght * CharacterMoveDirection);
                 // ѕроверка столкновений с коллайдерами.
-                Debug.DrawRay(transform.position + CollisionRayOrigin - Vector3.up * i / 2, CharacterMoveDirection * RayLenght, Color.black);
+                Debug.DrawRay( transform.position + CollisionRayOrigin, RayLenght * CharacterMoveDirection);
                 if (!Physics.Raycast(DistanceToCollisionRays[i], RayLenght))
                 {
                     if (!Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
         }
         // Ќаправление движени€ пользовател€.
-        Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
+        Debug.DrawRay(transform.position + Vector3.up, transform.right, Color.yellow);
     }
 }
 
@@ -98,4 +98,9 @@ if ( !Physics.Raycast(DistanceToCollisionRay, out Hit, RayLenght) )
         GetComponent<Rigidbody>().velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
     }
 }
+*/
+
+/* 18.05.2022
+ ( transform.forward * Mathf.Cos(Angle) + transform.right * Mathf.Sin(Angle) ).normalized * RayLenght 
+              float Angle = 45f * i * Mathf.Deg2Rad;
 */
