@@ -23,21 +23,21 @@ public class PlayerMovement : MonoBehaviour
         float HorizontalAxis = Input.GetAxisRaw("Horizontal");
         float VerticalAxis = Input.GetAxisRaw("Vertical");
 
-        // Проверка на IsJumped.
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ IsJumped.
         if (Physics.Raycast(transform.position + IfJumpedRayPositionOffset, Vector3.down, MaxRayDistance))
         {
             CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
             Ray[] DistanceToCollisionRays = new Ray[4];
             for (int i = 0; i < 1; i++)
             {
-                DistanceToCollisionRays[i] = new( transform.position + CollisionRayOrigin, RayLenght * CharacterMoveDirection);
-                // Проверка столкновений с коллайдерами.
-                Debug.DrawRay( transform.position + CollisionRayOrigin, RayLenght * CharacterMoveDirection);
+                DistanceToCollisionRays[i] = new(transform.position + CollisionRayOrigin,RayLenght * CharacterMoveDirection);
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+                Debug.DrawRay(transform.position + CollisionRayOrigin, RayLenght * CharacterMoveDirection);
                 if (!Physics.Raycast(DistanceToCollisionRays[i], RayLenght))
                 {
                     if (!Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
                     {
-                        // Полуфизическое Движение.
+                        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
                         ThisRb.velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
                     }
                     // FootStep sound.
@@ -51,10 +51,10 @@ public class PlayerMovement : MonoBehaviour
                     //
                 }
             }
-            // Луч проверки пользователя на прыжок.
+            // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
             Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
         }
-        // Направление движения пользователя.
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         Debug.DrawRay(transform.position + Vector3.up, transform.right, Color.yellow);
     }
 }
@@ -75,32 +75,31 @@ public class PlayerMovement : MonoBehaviour
                 }
 */
 /*
-// Физическое движение.
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 PlayerRigidbody.velocity = CharacterMoveDirection.normalized * PlayerSpeed;
 PlayerRigidbody.AddForce(CharacterMoveDirection.normalized * PlayerSpeed);
-// Векторное движение.
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 transform.position += CharacterMoveDirection.normalized * PlayerSpeed;
 */
 //public float MaxPlayerSpeed = 1000f;
 
-// Луч проверки пользователя на прыжок.
+// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
 //Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
 //&& !Input.GetButton("Fire3") ) //&& !Input.GetButton("Jump")
 
 /*09.05.2022
 Ray DistanceToCollisionRay = new(transform.position + CollisionRayOrigin, CharacterMoveDirection);
-// Проверка на расстояние до любого коллайдера.
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 if ( !Physics.Raycast(DistanceToCollisionRay, out Hit, RayLenght) )
 {
     if ( !Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
     {
-        // Полуфизическое Движение.
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         GetComponent<Rigidbody>().velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
     }
 }
 */
-
 /* 18.05.2022
  ( transform.forward * Mathf.Cos(Angle) + transform.right * Mathf.Sin(Angle) ).normalized * RayLenght 
               float Angle = 45f * i * Mathf.Deg2Rad;
-*/
+*/ 

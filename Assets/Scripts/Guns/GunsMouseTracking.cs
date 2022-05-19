@@ -10,7 +10,6 @@ public class GunsMouseTracking : MonoBehaviour
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
         LayerMask Mask = ~LayerMask.GetMask("Player");
         if (Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit, Mathf.Infinity,Mask))
         {
