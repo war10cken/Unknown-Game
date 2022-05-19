@@ -35,7 +35,7 @@ namespace Enemies
             _upperBeam.AddComponent<LineRenderer>();
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             _directionToPlayer = _player.transform.position - transform.position;
 
