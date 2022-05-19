@@ -10,8 +10,8 @@ public class GunsMouseTracking : MonoBehaviour
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit))
+        LayerMask Mask = ~LayerMask.GetMask("Player");
+        if (Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit, Mathf.Infinity,Mask))
         {
             Vector3 direction = hit.point - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
