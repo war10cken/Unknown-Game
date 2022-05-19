@@ -26,7 +26,7 @@ public class Jump : MonoBehaviour
             // Player's jump.
             if (JumpTimer >= 8000)
             {
-                Rb.AddForce( JumpForce * Time.deltaTime * (Vector3.up + CharacterMoveDirection).normalized);
+                Rb.AddForce( 1000000 * JumpForce * Time.deltaTime * (Vector3.up + CharacterMoveDirection).normalized);
                 JumpTimer = 0;
             }
         }
