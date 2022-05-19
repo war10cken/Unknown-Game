@@ -50,6 +50,9 @@ public class GunsController : MonoBehaviour
     
     private void Update()
     {
+        _gunName.characterSpacing -= 0.0000000001f;
+        _gunName.characterSpacing += 0.0000000001f;
+        
         if (Input.GetKey(KeyCode.Alpha1))
         {
             SetWeapon(_gravityGun, _gravityGun.Name, _gravityGun.HotKeys);
