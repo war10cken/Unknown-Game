@@ -17,30 +17,24 @@ public class Jump : MonoBehaviour
     }
     void Update()
     {
+        float HorizontalAxis = Input.GetAxis("Horizontal");
+        float VerticalAxis = Input.GetAxis("Vertical");
+        // Направление прыжка.
+        Vector3 CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
         if ( Physics.Raycast(transform.position + PositionOffset, Vector3.down, MaxRayDistance) && Input.GetButton("Jump") )
         {
-            float HorizontalAxis = Input.GetAxis("Horizontal");
-            float VerticalAxis = Input.GetAxis("Vertical");
-            // Направление прыжка.
-            Vector3 CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
             // Player's jump.
             if (JumpTimer >= 8000)
             {
-                Rb.AddForce((Vector3.up + CharacterMoveDirection).normalized * JumpForce);
+                Rb.AddForce( JumpForce * Time.deltaTime * (Vector3.up + CharacterMoveDirection).normalized);
                 JumpTimer = 0;
             }
-
         }
         else if (!Physics.Raycast(transform.position + PositionOffset, Vector3.down, MaxRayDistance))
-        {   //15.05.2022
-            float HorizontalAxis = Input.GetAxis("Horizontal");
-            float VerticalAxis = Input.GetAxis("Vertical");
-            Vector3 CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
-            Rb.AddForce(CharacterMoveDirection * InJumpSpeed * Time.deltaTime);
-            //
+        {
+            Rb.AddForce(InJumpSpeed * Time.deltaTime * CharacterMoveDirection);
         }
-
-            if (JumpTimer > 8000)
+        if (JumpTimer > 7999)
         {
             JumpTimer = 8000;
         }
