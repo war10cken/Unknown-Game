@@ -13,10 +13,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Sounds")]
     AudioSource FootSteps;
     Rigidbody ThisRb;
+    [Header("Animator")]
+    Animator PlayerAnimator;
     private void Awake()
     {
         FootSteps = GetComponent<AudioSource>();
         ThisRb = GetComponent<Rigidbody>();
+        PlayerAnimator = GetComponent<Animator>();
     }
     void Update()
     {
@@ -48,11 +51,38 @@ public class PlayerMovement : MonoBehaviour
                     {
                         FootSteps.Stop();
                     }
-                    //
+                    // Animation.
+                    if (ThisRb.velocity.sqrMagnitude != 0)
+                    {
+                        PlayerAnimator.SetBool("IsRunning", true);
+                        PlayerAnimator.SetBool("IsIdle", false);
+                        PlayerAnimator.SetBool("IsJumping", false);
+                        PlayerAnimator.SetBool("IsDash", false);
+                    }
+                    else if (ThisRb.velocity.sqrMagnitude == 0)
+                    { 
+                        PlayerAnimator.SetBool("IsIdle", true);
+                        PlayerAnimator.SetBool("IsRunning", false);
+                        PlayerAnimator.SetBool("IsJumping", false);
+                        PlayerAnimator.SetBool("IsDash", false);
+                    }
+                    else if(Dash.Counter <= 1000)
+                    {
+                        PlayerAnimator.SetBool("IsDash", true);
+                        PlayerAnimator.SetBool("IsIdle", false);
+                        PlayerAnimator.SetBool("IsRunning", false);
+                        PlayerAnimator.SetBool("IsJumping", false);
+                    }
                 }
             }
             // ��� �������� ������������ �� ������.
             Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
+        }else
+        {
+            PlayerAnimator.SetBool("IsJumping", true);
+            PlayerAnimator.SetBool("IsIdle", false);
+            PlayerAnimator.SetBool("IsRunning", false);
+            PlayerAnimator.SetBool("IsDash", false);
         }
         // ����������� �������� ������������.
         Debug.DrawRay(transform.position + Vector3.up, transform.right, Color.yellow);

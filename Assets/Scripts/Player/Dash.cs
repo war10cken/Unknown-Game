@@ -4,11 +4,16 @@ public class Dash : MonoBehaviour
 {
     public float DashVelocity = 50f;
     public static int Counter = 4000;
+    Rigidbody Rb;
+    private void Awake()
+    {
+        Rb = GetComponent<Rigidbody>();
+    }
     void FixedUpdate()
     {
         if (Input.GetButton("Fire3") && Counter >= 4000)
         {
-            GetComponent<Rigidbody>().velocity += transform.right * DashVelocity; // forward
+            Rb.velocity += transform.forward * DashVelocity;
             Counter = 0;
         }
         if (Counter > 4000) 

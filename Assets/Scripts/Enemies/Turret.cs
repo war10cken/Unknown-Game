@@ -11,7 +11,7 @@ namespace Enemies
         public float DistanceDetection = 10f;
         
         [Header("ShowingRay")]
-        public GameObject BeamGameObject;
+        //public GameObject BeamGameObject;
         public GameObject RayOriginMark;
         public GameObject RayOriginMark2;
         public Material RayMaterial;
@@ -90,8 +90,8 @@ namespace Enemies
 
         private void DestructLaser()
         {
-            BeamGameObject.GetComponent<LineRenderer>().SetPosition(0, Vector3.zero);
-            BeamGameObject.GetComponent<LineRenderer>().SetPosition(1, Vector3.zero);
+            //BeamGameObject.GetComponent<LineRenderer>().SetPosition(0, Vector3.zero);
+            //BeamGameObject.GetComponent<LineRenderer>().SetPosition(1, Vector3.zero);
         }
     }
 }
