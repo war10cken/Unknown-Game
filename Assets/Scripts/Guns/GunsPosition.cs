@@ -18,11 +18,13 @@ public class GunsPosition : MonoBehaviour
     private void Update()
     {
         Ray ray = new(RayOriginMark.transform.position, RayOriginMark.transform.forward);
-
+        //LayerMask Mask = ~LayerMask.GetMask("IngoreRaycast");
         if (Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit, MaxDistanceCollision))
         {
             Vector3 targetPos = Player.transform.TransformPoint(Offset);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, DeformationGunPositionTrackingSpeed);
+            //Debug.Log(hit.collider.gameObject.tag);
+            Debug.DrawRay(ray.origin, ray.direction * RayLenght,Color.white);
         }
     }
 }

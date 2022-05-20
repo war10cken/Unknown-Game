@@ -10,13 +10,14 @@ public class GunsMouseTracking : MonoBehaviour
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        LayerMask Mask = ~LayerMask.GetMask("Player");
-        if (Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit, Mathf.Infinity,Mask))
+        //LayerMask Mask = ~LayerMask.GetMask("IngoreRaycast");
+        if ( Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit, Mathf.Infinity) )
         {
             Vector3 direction = hit.point - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, GunTrackingSpeed);
-            Debug.DrawRay(transform.position, direction, Color.blue);
+            Debug.DrawRay(ray.origin, ray.direction * RayLenght, Color.blue);
+            Debug.Log(hit.collider.gameObject.tag);
         }
         else
         {
