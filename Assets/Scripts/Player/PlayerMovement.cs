@@ -33,15 +33,19 @@ public class PlayerMovement : MonoBehaviour
             Ray[] DistanceToCollisionRays = new Ray[4];
             for (int i = 0; i < 1; i++)
             {
+                //
+                Vector3 Direction = VerticalAxis * PlayerSpeed * Time.deltaTime * transform.forward + HorizontalAxis * PlayerSpeed * Time.deltaTime * transform.right;
+                //
                 DistanceToCollisionRays[i] = new(transform.position + CollisionRayOrigin,RayLenght * CharacterMoveDirection);
                 // �������� ������������ � ������������.
-                Debug.DrawRay(transform.position + CollisionRayOrigin, RayLenght * CharacterMoveDirection);
+                Debug.DrawRay(transform.position + CollisionRayOrigin, RayLenght * Direction);
                 if (!Physics.Raycast(DistanceToCollisionRays[i], RayLenght))
                 {
                     if (!Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
                     {
                         // �������������� ��������.
-                        ThisRb.velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
+                        //ThisRb.velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
+                        ThisRb.velocity = Direction;
                     }
                     // FootStep sound.
                     if (CharacterMoveDirection != Vector3.zero && FootSteps.isPlaying == false) 

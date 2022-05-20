@@ -424,10 +424,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d061f21dc2f90c4e975b2cadbd45b7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpeed: 100
+  PlayerSpeed: 150
   MaxRayDistance: 0.55
   IfJumpedRayPositionOffset: {x: 0, y: 0.5, z: 0}
-  RayLenght: 1
+  RayLenght: 0.1
   ForceCollision: 5
   CollisionRayOrigin: {x: 0, y: 0, z: 0}
 --- !u!65 &89506674
@@ -883,7 +883,7 @@ Transform:
   - {fileID: 1009976807}
   - {fileID: 1794758906}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &308652495
 GameObject:
@@ -2870,7 +2870,7 @@ BoxCollider:
   m_GameObject: {fileID: 658986777}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -3106,7 +3106,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ce4d82a04a46e3d469fa035c9f632c5b, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ce4d82a04a46e3d469fa035c9f632c5b, type: 3}
       propertyPath: m_LocalPosition.x
