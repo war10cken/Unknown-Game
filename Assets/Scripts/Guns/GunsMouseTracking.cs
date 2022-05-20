@@ -2,22 +2,22 @@ using UnityEngine;
 
 public class GunsMouseTracking : MonoBehaviour
 {
-    [Header("Raycast")]
-    public float RayLenght = 100;
+    LayerMask Mask;
     RaycastHit hit;
     [Header("Velocities")]
     public float GunTrackingSpeed = 0.2f;
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //LayerMask Mask = ~LayerMask.GetMask("IngoreRaycast");
-        if ( Physics.Raycast(ray.origin, ray.direction * RayLenght, out hit, Mathf.Infinity) )
+        Mask = ~LayerMask.GetMask("NoneCollision");
+
+        if ( Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, Mask) )
         {
             Vector3 direction = hit.point - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, GunTrackingSpeed);
-            Debug.DrawRay(ray.origin, ray.direction * RayLenght, Color.blue);
-            Debug.Log(hit.collider.gameObject.tag);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, GunTrackingSpeed * Time.deltaTime);
+
+            Debug.DrawRay(ray.origin, hit.point, Color.blue);
         }
         else
         {
@@ -27,3 +27,7 @@ public class GunsMouseTracking : MonoBehaviour
     }
 }
 //Vector3 direction = (hit.point - LaserModel.transform.position).normalized;
+/*
+[Header("Raycast")]
+public float RayLenght = 100;
+*/
