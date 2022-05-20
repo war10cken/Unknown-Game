@@ -7,11 +7,13 @@ using UnityEngine.UI;
 namespace Player
 {
     [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(BoxCollider))]
+    //[RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(PlayerMovement))]
     [RequireComponent(typeof(PlayerTracking))]
     [RequireComponent(typeof(Jump))]
     [RequireComponent(typeof(Dash))]
+    //20.05.2022
+    [RequireComponent(typeof(BoxCollider))]
     public class Player : MonoBehaviour
     {
         [SerializeField] private Slider _health;
@@ -33,35 +35,38 @@ namespace Player
         private Jump _jump;
         private Dash _dash;
 
+        //private CapsuleCollider PlayerCapsule;
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _boxCollider = GetComponent<BoxCollider>();
+            //_boxCollider = GetComponent<BoxCollider>();
             _ragdoll = GetComponentsInChildren<Rigidbody>();
             _capsuleColliders = GetComponentsInChildren<CapsuleCollider>();
             _boxColliders = GetComponentsInChildren<BoxCollider>();
             _constantForces = GetComponentsInChildren<ConstantForce>();
             _sphereColliders = GetComponentsInChildren<SphereCollider>();
+
+            
         }
 
         private void Start()
         {
             foreach (var rigidbody in _ragdoll)
             {
-                rigidbody.isKinematic = true;
+                //rigidbody.isKinematic = true;
             }
             
             foreach (var constantForce in _constantForces)
             {
-                constantForce.enabled = false;
+                //constantForce.enabled = false;
             }
             
-            ChangeEnabledState(_capsuleColliders, false);
-            ChangeEnabledState(_boxColliders, false);
-            ChangeEnabledState(_sphereColliders, false);
+            //ChangeEnabledState(_capsuleColliders, false);
+            //ChangeEnabledState(_boxColliders, false);
+            //ChangeEnabledState(_sphereColliders, false);
             
             _rigidbody.isKinematic = false;
-            _boxCollider.enabled = true;
+            //_boxCollider.enabled = true;
         }
 
         private void RagdollOff()
