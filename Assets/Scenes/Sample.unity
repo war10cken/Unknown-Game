@@ -7513,9 +7513,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1733506364}
-  CameraTrackingSpeed: 50
-  OffsetPositionY: 0.07
-  OffsetPositionZ: 0.8
+  CameraTrackingSpeed: 15
+  OffsetPositionY: 0.2
+  OffsetPositionZ: 0
   MaxRayDistance: 1
 --- !u!114 &658986779
 MonoBehaviour:
@@ -7694,12 +7694,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 658986777}
   m_LocalRotation: {x: 0.052335896, y: -0, z: -0, w: 0.9986295}
-  m_LocalPosition: {x: 0, y: 0.72, z: -0.72}
+  m_LocalPosition: {x: -17.415, y: 1.75, z: 2.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 89506679}
-  m_RootOrder: 7
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 6, y: 0, z: 0}
 --- !u!65 &658986787
 BoxCollider:
@@ -7710,7 +7710,7 @@ BoxCollider:
   m_GameObject: {fileID: 658986777}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.07810946}
   m_Center: {x: 0, y: 3.3000533e-10, z: -0.04730783}
