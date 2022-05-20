@@ -22,7 +22,7 @@ AnimatorStateTransition:
   m_ExitTime: 0
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &-8088330833262356941
@@ -72,7 +72,7 @@ AnimatorStateTransition:
   m_ExitTime: 0
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1102 &-4989459237878386169
@@ -95,13 +95,13 @@ AnimatorState:
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
+  m_MirrorParameterActive: 1
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: -8284908221344111450, guid: ce4d82a04a46e3d469fa035c9f632c5b, type: 3}
   m_Tag: 
   m_SpeedParameter: 
-  m_MirrorParameter: 
+  m_MirrorParameter: IsJumping
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1107 &-3695285840691405308
@@ -121,7 +121,7 @@ AnimatorStateMachine:
     m_Position: {x: 310, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4989459237878386169}
-    m_Position: {x: 790, y: 200, z: 0}
+    m_Position: {x: 800, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3222875990056809939}
     m_Position: {x: 450, y: 260, z: 0}
@@ -168,7 +168,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: dash
-  m_Speed: 5
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1133937329188512731}
@@ -180,13 +180,13 @@ AnimatorState:
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
+  m_MirrorParameterActive: 1
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -851199388697429409, guid: ce4d82a04a46e3d469fa035c9f632c5b, type: 3}
+  m_Motion: {fileID: 7802988848643025829, guid: ce4d82a04a46e3d469fa035c9f632c5b, type: 3}
   m_Tag: 
   m_SpeedParameter: 
-  m_MirrorParameter: 
+  m_MirrorParameter: IsDash
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1102 &-1962927902658803786
@@ -226,7 +226,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: run
-  m_Speed: 6
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2125644738785234100}
@@ -241,7 +241,7 @@ AnimatorState:
   m_MirrorParameterActive: 1
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 6200578666267062213, guid: ce4d82a04a46e3d469fa035c9f632c5b, type: 3}
+  m_Motion: {fileID: -5297019649661602221, guid: ce4d82a04a46e3d469fa035c9f632c5b, type: 3}
   m_Tag: 
   m_SpeedParameter: Speed
   m_MirrorParameter: IsRunning
@@ -460,7 +460,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 1
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 1
