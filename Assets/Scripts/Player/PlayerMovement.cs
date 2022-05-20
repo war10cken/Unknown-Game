@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
                         FootSteps.Stop();
                     }
                     // Animation.
-                    if (ThisRb.velocity.sqrMagnitude != 0)
+                    if (ThisRb.velocity.sqrMagnitude != 0 && Dash.Counter > 1000)
                     {
                         PlayerAnimator.SetBool("IsRunning", true);
                         PlayerAnimator.SetBool("IsIdle", false);
@@ -72,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
                         PlayerAnimator.SetBool("IsIdle", false);
                         PlayerAnimator.SetBool("IsRunning", false);
                         PlayerAnimator.SetBool("IsJumping", false);
+                        Debug.Log(Dash.Counter);
                     }
                 }
             }

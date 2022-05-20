@@ -14,8 +14,10 @@ public class CameraTracking : MonoBehaviour
     void Update()
     {
         Vector3 newPosition = new(Player.transform.position.x, Player.transform.position.y + OffsetPositionY, Player.transform.position.z - OffsetPositionZ);
-        transform.LookAt(Player.transform);
-        transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref Velocity, CameraTrackingSpeed * Time.deltaTime);
+        //transform.LookAt(Player.transform);
+        //transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref Velocity, CameraTrackingSpeed * Time.deltaTime);
+
+
         //transform.position = newPosition;
         /*
         Ray ray = new(transform.position, -transform.forward);
