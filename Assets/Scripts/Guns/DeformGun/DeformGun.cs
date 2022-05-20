@@ -33,7 +33,7 @@ public class DeformGun : Gun
     {
         Ray ray = new(RayOriginMark.transform.position, RayOriginMark.transform.forward);
         Debug.DrawRay(ray.origin, ray.direction * LaserLenght, Color.red);
-
+        LayerMask Mask = ~LayerMask.GetMask("Player");
         if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButton("Fire1"))
         {
             ShowLaser();

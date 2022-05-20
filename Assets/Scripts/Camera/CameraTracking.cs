@@ -14,24 +14,6 @@ public class CameraTracking : MonoBehaviour
     void Update()
     {
         Vector3 newPosition = new(Player.transform.position.x, Player.transform.position.y + OffsetPositionY, Player.transform.position.z - OffsetPositionZ);
-        //transform.LookAt(Player.transform);
-        //transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref Velocity, CameraTrackingSpeed * Time.deltaTime);
-
-
-        //transform.position = newPosition;
-        /*
-        Ray ray = new(transform.position, -transform.forward);
-        if (Physics.Raycast(ray, MaxRayDistance))
-        {
-            //Vector3 TargetPos = transform.position - transform.forward;
-            //Vector3.MoveTowards(transform.position, TargetPos, CameraTrackingSpeed);
-            //transform.position -= transform.forward * 5f;
-        }
-        else
-        {
-            //transform.position = newPosition;
-        }
-        */
         Debug.DrawRay(transform.position, -transform.forward, Color.red);
     }
 }
@@ -41,3 +23,22 @@ transform.position = Vector3.MoveTowards(transform.position, newPosition, MaxSpe
 transform.position = Vector3.Lerp(transform.position, newPosition, CameraTrackingSpeed);
 */
 //transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref Velocity, CameraTrackingSpeed * Time.deltaTime);
+
+//transform.LookAt(Player.transform);
+//transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref Velocity, CameraTrackingSpeed * Time.deltaTime);
+
+
+//transform.position = newPosition;
+/*
+Ray ray = new(transform.position, -transform.forward);
+if (Physics.Raycast(ray, MaxRayDistance))
+{
+    //Vector3 TargetPos = transform.position - transform.forward;
+    //Vector3.MoveTowards(transform.position, TargetPos, CameraTrackingSpeed);
+    //transform.position -= transform.forward * 5f;
+}
+else
+{
+    //transform.position = newPosition;
+}
+*/

@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class PlayerTracking : MonoBehaviour
 {
     [Header("Raycast")]
@@ -12,20 +11,23 @@ public class PlayerTracking : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         Vector3 target;
-        LayerMask Mask = ~LayerMask.GetMask("Player");
-        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, Mathf.Infinity, Mask))
+        //LayerMask Mask = ~LayerMask.GetMask("IngoreRaycast");
+        if (!Input.GetButton("Fire2"))
         {
-            target = (hit.point - transform.position);
-            target = new Vector3(target.x, 0, target.z);
-            transform.forward = Vector3.Slerp(transform.forward, target, PlayerTrackingSpeed * Time.deltaTime); //transform.forward
+            if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, Mathf.Infinity))
+            {
+                target = (hit.point - transform.position);
+                target = new Vector3(target.x, 0, target.z);
+                transform.forward = Vector3.Slerp(transform.forward, target, PlayerTrackingSpeed * Time.deltaTime); //transform.forward
+            }
+            else
+            {
+                target = ray.direction;
+                target = new Vector3(target.x, 0, target.z);
+                transform.forward = Vector3.Slerp(transform.forward, target, PlayerTrackingSpeed * Time.deltaTime);
+            }
+            Debug.DrawRay(ray.origin, ray.direction * LaserLenght, Color.cyan);
         }
-        else
-        {
-            target = ray.direction;
-            target = new Vector3(target.x, 0, target.z);
-            transform.forward = Vector3.Slerp(transform.forward, target, PlayerTrackingSpeed * Time.deltaTime);
-        }
-        Debug.DrawRay(ray.origin, ray.direction * LaserLenght, Color.cyan);
     }
 }
 /*
