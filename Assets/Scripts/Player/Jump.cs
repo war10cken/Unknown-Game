@@ -19,28 +19,32 @@ public class Jump : MonoBehaviour
     {
         float HorizontalAxis = Input.GetAxis("Horizontal");
         float VerticalAxis = Input.GetAxis("Vertical");
-        // Направление прыжка.
+        // Jump direction.
         Vector3 CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
         if ( Physics.Raycast(transform.position + PositionOffset, Vector3.down, MaxRayDistance) && Input.GetButton("Jump") )
         {
             // Player's jump.
             if (JumpTimer >= 8000)
             {
-                Rb.AddForce( 1000000 * JumpForce * Time.deltaTime * (Vector3.up + CharacterMoveDirection).normalized);
+                Rb.AddForce( JumpForce * (Vector3.up + CharacterMoveDirection).normalized);
                 JumpTimer = 0;
             }
         }
-        else if (!Physics.Raycast(transform.position + PositionOffset, Vector3.down, MaxRayDistance))
+        if (!Physics.Raycast(transform.position + PositionOffset, Vector3.down, MaxRayDistance))
         {
             Rb.AddForce(InJumpSpeed * Time.deltaTime * CharacterMoveDirection);
         }
+        JumpTimerF();
+    }
+    void JumpTimerF()
+    {
         if (JumpTimer > 7999)
         {
             JumpTimer = 8000;
         }
         else
         {
-            JumpTimer += (int)(1 / Time.deltaTime);
+            JumpTimer += (1 / Time.deltaTime);
         }
     }
 }

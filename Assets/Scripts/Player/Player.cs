@@ -71,15 +71,11 @@ namespace Player
 
         private void RagdollOff()
         {
-            if (Input.GetButtonDown("NONE"))
+            foreach (var rigidbody in _ragdoll)
             {
-                foreach (var rigidbody in _ragdoll)
-                {
-                    rigidbody.isKinematic = true;
-                }
-                
-                _boxCollider.enabled = true;
-            }
+                rigidbody.isKinematic = true;
+            }   
+            _boxCollider.enabled = true;
         }
         
         private void RagdollOn()
@@ -129,12 +125,6 @@ namespace Player
             {
                 enemy.DealDamage(this);
             }
-            // 09.05.2022.
-            if (other.gameObject.transform.position.sqrMagnitude > 1)
-            {
-                RagdollOff();
-            }
-            //
         }
 
         private void OnCollisionStay(Collision other)
