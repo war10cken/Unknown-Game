@@ -1,9 +1,7 @@
 using UnityEngine;
-
 public class PlayerTracking : MonoBehaviour
 {
-    [Header("Raycast")]
-    public float LaserLenght = 100;
+    LayerMask Mask;
     RaycastHit hit;
     [Header("Velocities")]
     public float PlayerTrackingSpeed = 0.2f;
@@ -12,26 +10,29 @@ public class PlayerTracking : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         Vector3 target;
-        LayerMask Mask = ~LayerMask.GetMask("Player");
-        if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, Mathf.Infinity, Mask))
+        Mask = ~LayerMask.GetMask("NoneCollision");
+        if (!Input.GetButton("G"))
         {
-            target = (hit.point - transform.position);
-            target = new Vector3(target.x, 0, target.z);
-            transform.right = Vector3.Slerp(transform.right, target, PlayerTrackingSpeed * Time.deltaTime); //transform.forward
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, Mask))
+            {
+                target = (hit.point - transform.position);
+                target = new Vector3(target.x, 0, target.z);
+                transform.forward = Vector3.Slerp(transform.forward, target, PlayerTrackingSpeed * Time.deltaTime); //transform.forward
+                Debug.DrawRay(ray.origin, hit.point, Color.red);
+            }
+            else
+            {
+                target = ray.direction;
+                target = new Vector3(target.x, 0, target.z);
+                transform.forward = Vector3.Slerp(transform.forward, target, PlayerTrackingSpeed * Time.deltaTime);
+            }
         }
-        else
-        {
-            target = ray.direction;
-            target = new Vector3(target.x, 0, target.z);
-            transform.right = Vector3.Slerp(transform.right, target, PlayerTrackingSpeed * Time.deltaTime);
-        }
-        Debug.DrawRay(ray.origin, ray.direction * LaserLenght, Color.cyan);
     }
 }
 /*
- * [Header("Player")]
-    public GameObject Player;
- * 
+[Header("Player")]
+public GameObject Player;
+
 target = (hit.point - Player.transform.position);
 target = new Vector3(target.x, 0, target.z);
 Player.transform.forward = Vector3.Slerp(Player.transform.forward, target, PlayerTrackingSpeed); 
@@ -39,4 +40,10 @@ Player.transform.forward = Vector3.Slerp(Player.transform.forward, target, Playe
 target = ray.direction;
 target = new Vector3(target.x, 0, target.z);
 Player.transform.forward = Vector3.Slerp(Player.transform.forward, target, PlayerTrackingSpeed);
+*/
+
+/*
+[Header("Raycast")]
+public float LaserLenght = 100;
+RaycastHit hit;
 */

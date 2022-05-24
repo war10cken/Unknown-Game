@@ -1,6 +1,8 @@
 using UnityEngine;
+[RequireComponent(typeof(AudioSource))]
 public class PlayerMovement : MonoBehaviour
 {
+    Rigidbody ThisRb;
     public float PlayerSpeed = 5f;
     public float MaxRayDistance = 1f;
     public Vector3 IfJumpedRayPositionOffset;
@@ -12,11 +14,15 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 CollisionRayOrigin;
     [Header("Sounds")]
     AudioSource FootSteps;
-    Rigidbody ThisRb;
+    private float FootStepTimer = 20f;
+    public float FootStepsStep = 20f;
+    [Header("Animator")]
+    Animator PlayerAnimator;
     private void Awake()
     {
         FootSteps = GetComponent<AudioSource>();
         ThisRb = GetComponent<Rigidbody>();
+        PlayerAnimator = GetComponent<Animator>();
     }
     void Update()
     {
@@ -30,9 +36,8 @@ public class PlayerMovement : MonoBehaviour
             Ray[] DistanceToCollisionRays = new Ray[4];
             for (int i = 0; i < 1; i++)
             {
-                DistanceToCollisionRays[i] = new(transform.position + CollisionRayOrigin,RayLenght * CharacterMoveDirection);
-                // �������� ������������ � ������������.
-                Debug.DrawRay(transform.position + CollisionRayOrigin, RayLenght * CharacterMoveDirection);
+                DistanceToCollisionRays[i] = new(transform.position + CollisionRayOrigin, RayLenght * CharacterMoveDirection);
+                // 
                 if (!Physics.Raycast(DistanceToCollisionRays[i], RayLenght))
                 {
                     if (!Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
@@ -41,18 +46,64 @@ public class PlayerMovement : MonoBehaviour
                         ThisRb.velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
                     }
                     // FootStep sound.
-                    if (CharacterMoveDirection != Vector3.zero && FootSteps.isPlaying == false) 
+                    if (FootStepTimer > FootStepsStep)
+                    {
+                        FootStepTimer = FootStepsStep;
+                    }
+                    else
+                    {
+                        FootStepTimer += 1 / Time.deltaTime;
+                    }
+                    if (CharacterMoveDirection != Vector3.zero && FootSteps.isPlaying == false && FootStepTimer == FootStepsStep) 
                     {
                         FootSteps.Play();
-                    }else if (CharacterMoveDirection == Vector3.zero)
+                        FootStepTimer = 0;
+                    }
+                    else if (CharacterMoveDirection == Vector3.zero)
                     {
                         FootSteps.Stop();
                     }
-                    //
+                    // Animation.
+                    if (ThisRb.velocity.sqrMagnitude != 0 && Dash.Counter > 1000)
+                    {
+                        /*
+                        PlayerAnimator.SetBool("IsRunning", true);
+                        PlayerAnimator.SetBool("IsIdle", false);
+                        PlayerAnimator.SetBool("IsJumping", false);
+                        PlayerAnimator.SetBool("IsDash", false);
+                        */
+                    }
+                    else if (ThisRb.velocity.sqrMagnitude == 0)
+                    { 
+                        /*
+                        PlayerAnimator.SetBool("IsIdle", true);
+                        PlayerAnimator.SetBool("IsRunning", false);
+                        PlayerAnimator.SetBool("IsJumping", false);
+                        PlayerAnimator.SetBool("IsDash", false);
+                        */
+                    }
+                    else if(Dash.Counter <= 1000)
+                    {
+                        /*
+                        PlayerAnimator.SetBool("IsDash", true);
+                        PlayerAnimator.SetBool("IsIdle", false);
+                        PlayerAnimator.SetBool("IsRunning", false);
+                        PlayerAnimator.SetBool("IsJumping", false);
+                        */
+                    }
                 }
             }
             // ��� �������� ������������ �� ������.
             Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
+        }else
+        {
+            /*
+            // Animation.
+            PlayerAnimator.SetBool("IsJumping", true);
+            PlayerAnimator.SetBool("IsIdle", false);
+            PlayerAnimator.SetBool("IsRunning", false);
+            PlayerAnimator.SetBool("IsDash", false);
+            */
         }
         // ����������� �������� ������������.
         Debug.DrawRay(transform.position + Vector3.up, transform.right, Color.yellow);
@@ -102,4 +153,9 @@ if ( !Physics.Raycast(DistanceToCollisionRay, out Hit, RayLenght) )
 /* 18.05.2022
  ( transform.forward * Mathf.Cos(Angle) + transform.right * Mathf.Sin(Angle) ).normalized * RayLenght 
               float Angle = 45f * i * Mathf.Deg2Rad;
-*/ 
+*/
+
+// Shooter Movement. 20.05.2022
+//Vector3 Direction = VerticalAxis * PlayerSpeed * Time.deltaTime * transform.forward + HorizontalAxis * PlayerSpeed * Time.deltaTime * transform.right;
+//ThisRb.velocity = Direction;
+//

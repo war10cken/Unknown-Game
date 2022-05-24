@@ -673,7 +673,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329feb79c0edfbf4aaeb70c8d917efd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RayLenght: 100
   GunTrackingSpeed: 0.2
 --- !u!114 &146732277
 MonoBehaviour:
@@ -690,7 +689,6 @@ MonoBehaviour:
   Player: {fileID: 260379150748841760}
   RayOriginMark: {fileID: 353801457}
   Offset: {x: 0.48, y: -0.8, z: -1}
-  RayLenght: 100
   MaxDistanceCollision: 100
   DeformationGunPositionTrackingSpeed: 0.2
   LaserSpeedRotation: 5
@@ -1619,7 +1617,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 25, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &313336841
@@ -9348,10 +9346,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86b1df5fbb026244584d1d9d292c038b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 8857227524622059131}
-  CameraTrackingSpeed: 50
-  OffsetPositionY: 2
-  OffsetPositionZ: 8
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9664,7 +9658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329feb79c0edfbf4aaeb70c8d917efd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RayLenght: 100
   GunTrackingSpeed: 0.2
 --- !u!114 &1041865166
 MonoBehaviour:
@@ -9681,7 +9674,6 @@ MonoBehaviour:
   Player: {fileID: 260379150748841760}
   RayOriginMark: {fileID: 784798379}
   Offset: {x: 0.48, y: -0.8, z: -1}
-  RayLenght: 100
   MaxDistanceCollision: 100
   DeformationGunPositionTrackingSpeed: 0.2
   LaserSpeedRotation: 5
@@ -10702,7 +10694,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329feb79c0edfbf4aaeb70c8d917efd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RayLenght: 100
   GunTrackingSpeed: 0.2
 --- !u!114 &1208270005
 MonoBehaviour:
@@ -10719,7 +10710,6 @@ MonoBehaviour:
   Player: {fileID: 260379150748841760}
   RayOriginMark: {fileID: 1122153698}
   Offset: {x: 0.48, y: -0.8, z: -1}
-  RayLenght: 100
   MaxDistanceCollision: 100
   DeformationGunPositionTrackingSpeed: 0.2
   LaserSpeedRotation: 5
@@ -11289,7 +11279,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329feb79c0edfbf4aaeb70c8d917efd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RayLenght: 100
   GunTrackingSpeed: 0.2
 --- !u!114 &1260411617
 MonoBehaviour:
@@ -11306,7 +11295,6 @@ MonoBehaviour:
   Player: {fileID: 260379150748841760}
   RayOriginMark: {fileID: 1765471758}
   Offset: {x: 0.48, y: -0.8, z: -1}
-  RayLenght: 100
   MaxDistanceCollision: 100
   DeformationGunPositionTrackingSpeed: 0.2
   LaserSpeedRotation: 5
@@ -14756,7 +14744,7 @@ GameObject:
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2113064988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15601,7 +15589,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c78c30869d36664fb11dbcdae6b8714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LaserLenght: 100
   PlayerTrackingSpeed: 5
 --- !u!114 &260379150748841775
 MonoBehaviour:
@@ -15621,6 +15608,7 @@ MonoBehaviour:
   RayLenght: 3
   ForceCollision: 100
   CollisionRayOrigin: {x: 0, y: 1, z: 0}
+  FootStepsStep: 20
 --- !u!144 &260379151137215913
 CharacterJoint:
   m_ObjectHideFlags: 0

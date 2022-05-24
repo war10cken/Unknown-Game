@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
-  TurretRotationSpeed: 5
+  TurretRotationSpeed: 0.1
   DistanceDetection: 10
   BeamGameObject: {fileID: 0}
   RayOriginMark: {fileID: 3841082864856725189}
