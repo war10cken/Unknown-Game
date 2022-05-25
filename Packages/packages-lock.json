@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.coffee.softmask-for-ugui": {
+      "version": "https://github.com/mob-sakai/SoftMaskForUGUI.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "b870d64b5704a764fd03aaccb11f2dbe652b1756"
+    },
     "com.unity.animation.rigging": {
       "version": "1.1.1",
       "depth": 0,
@@ -36,7 +43,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.13",
+      "version": "3.0.14",
       "depth": 0,
       "source": "registry",
       "dependencies": {

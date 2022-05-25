@@ -54,7 +54,14 @@ namespace Guns
 
         protected Selectable GrabItem()
         {
-            Ray = _currentItem is null ? Camera.main.ScreenPointToRay(Input.mousePosition) : new Ray(transform.position, _currentItem.transform.position);          
+            // Ray = _currentItem is null
+            //           ? Camera.main.ScreenPointToRay(Input.mousePosition)
+            //           : new Ray(transform.position, _currentItem.transform.position);
+
+            Ray = _currentItem is null
+                      ? new Ray(_rayOriginMark.transform.position, _rayOriginMark.transform.forward)
+                      : new Ray(transform.position, _currentItem.transform.position);
+
             _leftMouseClick = Input.GetAxisRaw("Fire1");
             _vertical = Input.GetAxisRaw("Vertical");
             _horizontal = Input.GetAxisRaw("Horizontal");
@@ -77,7 +84,7 @@ namespace Guns
                     MoveObject(_currentItem);
                 }
                 
-                if (_currentItem is null && Physics.Raycast(Ray, out Hit, MaxGrabDistance))
+                if (_currentItem is null && Physics.Raycast(Ray, out Hit, MaxGrabDistance * 100f))
                 {
                     if (Hit.collider.gameObject.TryGetComponent(out Selectable item))
                     {
