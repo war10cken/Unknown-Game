@@ -16,7 +16,11 @@ public class Dash : MonoBehaviour
             Rb.velocity += transform.forward * DashVelocity;
             Counter = 0;
         }
-        if (Counter > 4000) 
+        JumpCounter();
+    }
+    void JumpCounter()
+    {
+        if (Counter > 4000)
         {
             Counter = 4000;
         }
@@ -24,7 +28,6 @@ public class Dash : MonoBehaviour
         {
             Counter += (int)(1 / Time.fixedDeltaTime);
         }
-        //Debug.Log(Counter);
     }
 }
 /*

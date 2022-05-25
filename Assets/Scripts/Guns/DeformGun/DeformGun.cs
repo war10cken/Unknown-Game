@@ -1,5 +1,3 @@
-using System;
-using DG.Tweening;
 using Guns;
 using UnityEngine;
 
@@ -23,8 +21,7 @@ public class DeformGun : Gun
     public float ParticleDissapeareTime = 1f;
 
     private AudioSource _laserSound;
-    
-    private void Start()
+    private void Awake()
     {
         _laserSound = GetComponent<AudioSource>();
     }
@@ -37,7 +34,6 @@ public class DeformGun : Gun
         if (Physics.Raycast(ray.origin, ray.direction * LaserLenght, out hit, MaxDistanceCollision) && Input.GetButton("Fire1"))
         {
             ShowLaser();
-            
             if (hit.collider.gameObject.GetComponent<Rigidbody>() != null)
             {
                 LaserSoundOn();
@@ -45,8 +41,7 @@ public class DeformGun : Gun
                 Addforce(ray);
                 HitParticle(hit);
             }            
-        }
-        else
+        }else
         {
             DestructLaser();
             LaserSoundOff();

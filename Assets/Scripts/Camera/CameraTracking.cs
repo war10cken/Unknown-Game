@@ -16,10 +16,12 @@ public class CameraTracking : MonoBehaviour
     void Update()
     {
         Ray RayDirectionToRotate = Camera.main.ScreenPointToRay(Input.mousePosition);
+        /*
         if ( Physics.Raycast(RayDirectionToRotate, out Hit, Mathf.Infinity))
         {
             
         }
+        */
     }
 }
 /* 
