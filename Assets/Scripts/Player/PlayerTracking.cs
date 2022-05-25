@@ -3,6 +3,7 @@ public class PlayerTracking : MonoBehaviour
 {
     LayerMask Mask;
     RaycastHit hit;
+    public float MaxRayDistance = 50f;
     [Header("Velocities")]
     public float PlayerTrackingSpeed = 0.2f;
     void Update()
@@ -13,7 +14,7 @@ public class PlayerTracking : MonoBehaviour
         Mask = ~LayerMask.GetMask("NoneCollision");
         if (!Input.GetButton("G"))
         {
-            if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, Mask))
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, MaxRayDistance, Mask))
             {
                 target = (hit.point - transform.position);
                 target = new Vector3(target.x, 0, target.z);

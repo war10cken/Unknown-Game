@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public float RayLenght = 1f;
     public float ForceCollision = 5f;
     RaycastHit Hit;
-    private void Awake()
+    private void Start()
     {
         FootSteps = GetComponent<AudioSource>();
         ThisRb = GetComponent<Rigidbody>();
@@ -56,13 +56,11 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
         }else
         {
-            /*
             // Animation.
             PlayerAnimator.SetBool("IsJumping", true);
             PlayerAnimator.SetBool("IsIdle", false);
             PlayerAnimator.SetBool("IsRunning", false);
             PlayerAnimator.SetBool("IsDash", false);
-            */
         }
         // Player move direction.
         Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
@@ -90,33 +88,26 @@ public class PlayerMovement : MonoBehaviour
     }
     void Animations()
     {
-        // Animation.
         if (ThisRb.velocity.sqrMagnitude != 0 && Dash.Counter > 1000)
         {
-            /*
             PlayerAnimator.SetBool("IsRunning", true);
             PlayerAnimator.SetBool("IsIdle", false);
             PlayerAnimator.SetBool("IsJumping", false);
             PlayerAnimator.SetBool("IsDash", false);
-            */
         }
         else if (ThisRb.velocity.sqrMagnitude == 0)
         {
-            /*
             PlayerAnimator.SetBool("IsIdle", true);
             PlayerAnimator.SetBool("IsRunning", false);
             PlayerAnimator.SetBool("IsJumping", false);
             PlayerAnimator.SetBool("IsDash", false);
-            */
         }
         else if (Dash.Counter <= 1000)
         {
-            /*
             PlayerAnimator.SetBool("IsDash", true);
             PlayerAnimator.SetBool("IsIdle", false);
             PlayerAnimator.SetBool("IsRunning", false);
             PlayerAnimator.SetBool("IsJumping", false);
-            */
         }
     }
 }
