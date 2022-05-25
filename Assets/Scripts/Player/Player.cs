@@ -1,19 +1,17 @@
-using System;
-using System.Collections;
 using Enemies;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Player
 {
+    // [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    //[RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(PlayerMovement))]
     [RequireComponent(typeof(PlayerTracking))]
     [RequireComponent(typeof(Jump))]
     [RequireComponent(typeof(Dash))]
-    //20.05.2022
-    [RequireComponent(typeof(BoxCollider))]
+    [RequireComponent(typeof(CapsuleCollider))]
+    [RequireComponent(typeof(AudioSource))]
     public class Player : MonoBehaviour
     {
         [SerializeField] private Slider _health;
@@ -28,83 +26,118 @@ namespace Player
         private ConstantForce[] _constantForces;
         private SphereCollider[] _sphereColliders;
 
+        // private BoxCollider _boxCollider;
         private Rigidbody _rigidbody;
-        private BoxCollider _boxCollider;
         private PlayerMovement _playerMovement;
         private PlayerTracking _playerTracking;
         private Jump _jump;
         private Dash _dash;
-
-        //private CapsuleCollider PlayerCapsule;
+        private CapsuleCollider PlayerCapsule;
         private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
             //_boxCollider = GetComponent<BoxCollider>();
             _ragdoll = GetComponentsInChildren<Rigidbody>();
             _capsuleColliders = GetComponentsInChildren<CapsuleCollider>();
             _boxColliders = GetComponentsInChildren<BoxCollider>();
             _constantForces = GetComponentsInChildren<ConstantForce>();
             _sphereColliders = GetComponentsInChildren<SphereCollider>();
-
-            
         }
 
         private void Start()
         {
+            // RigidBody Settings.
+            _rigidbody = GetComponent<Rigidbody>();
+            _rigidbody.mass = 50;
+            _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            _rigidbody.angularDrag = 5;
+            _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            // CapsuleCollider Settings.
+            PlayerCapsule = GetComponent<CapsuleCollider>();
+            PlayerCapsule.height = 0.76f;
+            PlayerCapsule.radius = 0.1f;
+            PlayerCapsule.center = new(0, 0.34f, 0);
+            //
             foreach (var rigidbody in _ragdoll)
             {
-                //rigidbody.isKinematic = true;
+                rigidbody.isKinematic = true;
             }
             
             foreach (var constantForce in _constantForces)
             {
-                //constantForce.enabled = false;
+                constantForce.enabled = false;
+            }
+            foreach (var Capsule in _capsuleColliders)
+            {
+                Capsule.enabled = false;
+            }
+            foreach (var Box in _boxColliders)
+            {
+                Box.enabled = false;
+            }
+            foreach (var Sphere in _sphereColliders)
+            {
+                Sphere.enabled = false;
             }
             
-            //ChangeEnabledState(_capsuleColliders, false);
-            //ChangeEnabledState(_boxColliders, false);
-            //ChangeEnabledState(_sphereColliders, false);
-            
             _rigidbody.isKinematic = false;
-            //_boxCollider.enabled = true;
+            PlayerCapsule.enabled = true;
+
+            _playerMovement = GetComponent<PlayerMovement>();
+            _playerTracking = GetComponent<PlayerTracking>();
+            _jump = GetComponent<Jump>();
+            _dash = GetComponent<Dash>();
         }
 
         private void RagdollOff()
         {
-            if (Input.GetButtonDown("NONE"))
+            foreach (var rigidbody in _ragdoll)
             {
-                foreach (var rigidbody in _ragdoll)
-                {
-                    rigidbody.isKinematic = true;
-                }
-                
-                _boxCollider.enabled = true;
-            }
+                rigidbody.isKinematic = true;
+            }   
+            //_boxCollider.enabled = true;
         }
         
         private void RagdollOn()
         {
-            if (Input.GetButtonDown("CTRL"))
+            if (Input.GetButtonDown("F1"))
             {
-                ChangeEnabledState(_capsuleColliders, true);
-                ChangeEnabledState(_boxColliders, true);
-                ChangeEnabledState(_sphereColliders, true);
-                
-                // _constantForces = GetComponentsInChildren<ConstantForce>();
-                // foreach (ConstantForce force in _constantForces)
-                // {
-                //     //force.enabled = true;
-                // }
-
-                foreach (Rigidbody rb in _ragdoll)
+                foreach (var rigidbody in _ragdoll)
                 {
-                    rb.isKinematic = false;
+                    rigidbody.isKinematic = false;
                 }
-                
+                foreach (var constantForce in _constantForces)
+                {
+                    constantForce.enabled = true;
+                }
+                foreach (var Capsule in _capsuleColliders)
+                {
+                    Capsule.enabled = true;
+                }
+                foreach (var Box in _boxColliders)
+                {
+                    Box.enabled = true;
+                }
+                foreach (var Sphere in _sphereColliders)
+                {
+                    Sphere.enabled = true;
+                }
+
                 _playerMovement.enabled = false;
                 _playerTracking.enabled = false;
                 _jump.enabled = false;
                 _dash.enabled = false;
+                PlayerCapsule.enabled = false;
+
+                _rigidbody.isKinematic = true;
+                _rigidbody.mass = 0;
+                /*
+                _constantForces = GetComponentsInChildren<ConstantForce>();
+                foreach (ConstantForce force in _constantForces)
+                {
+                     force.enabled = true;
+                }
+                */
             }
         }
 
@@ -129,12 +162,6 @@ namespace Player
             {
                 enemy.DealDamage(this);
             }
-            // 09.05.2022.
-            if (other.gameObject.transform.position.sqrMagnitude > 1)
-            {
-                RagdollOff();
-            }
-            //
         }
 
         private void OnCollisionStay(Collision other)
@@ -153,9 +180,8 @@ namespace Player
                 _ui.gameObject.SetActive(false);
                 _gameOverScreen.gameObject.SetActive(true);
             }
-            // 09.05.2022.
-            //RagdollOff();
-            //RagdollOn();
+            //25.05.2022
+            RagdollOn();
             //
         }
     }

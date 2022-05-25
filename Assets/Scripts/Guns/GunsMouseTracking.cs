@@ -10,16 +10,14 @@ public class GunsMouseTracking : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Mask = ~LayerMask.GetMask("NoneCollision");
-
         if ( Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, Mask) )
         {
             Vector3 direction = hit.point - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, GunTrackingSpeed * Time.deltaTime);
 
-            Debug.DrawRay(ray.origin, hit.point, Color.blue);
-        }
-        else
+            Debug.DrawLine(ray.origin, hit.point, Color.blue);
+        }else
         {
             Quaternion lookRotation = Quaternion.LookRotation(ray.direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, GunTrackingSpeed);
@@ -31,3 +29,5 @@ public class GunsMouseTracking : MonoBehaviour
 [Header("Raycast")]
 public float RayLenght = 100;
 */
+//Ray ray2 = new(RayMark.transform.position, RayMark.transform.forward);
+//if (Physics.Raycast(ray2, Mathf.Infinity)) { }

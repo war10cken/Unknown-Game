@@ -6,74 +6,56 @@ namespace Enemies
 {
     public class Turret : Enemy
     {
-        public float TurretRotationSpeed = 100f;
+        public float TurretRotationSpeed = 1f;
         [Header("RaycastToPlayer")] 
         public float DistanceDetection = 10f;
         
         [Header("ShowingRay")]
-        //public GameObject BeamGameObject;
-        public GameObject RayOriginMark;
-        public GameObject RayOriginMark2;
+        public GameObject _upperBeamMark;
+        public GameObject _bottomBeamMark;
         public Material RayMaterial;
         
         [Header("HP")]
         [SerializeField] private Slider _health;
 
         private RaycastHit _hit;
-        private GameObject _bottomBeam;
-        private GameObject _upperBeam;
         private Vector3 _directionToPlayer;
 
-        private void Awake()
-        {
-            _bottomBeam = new GameObject("BottomTurretBeam");
-            _bottomBeam.SetActive(false);
-            _bottomBeam.AddComponent<LineRenderer>();
-        
-            _upperBeam = new GameObject("UpperTurretBeam");
-            _upperBeam.SetActive(false);
-            _upperBeam.AddComponent<LineRenderer>();
-        }
-
+        Ray ray;
+        Ray rayFromMark;
         private void Update()
         {
             _directionToPlayer = _player.transform.position - transform.position;
-
-            Ray ray = new(transform.position, _directionToPlayer.normalized * DistanceDetection);
-            LayerMask mask = LayerMask.GetMask("Player");
-            
-            if (Physics.Raycast(ray, DistanceDetection, mask))
+            ray = new(transform.position, _directionToPlayer.normalized * DistanceDetection);
+            //LayerMask mask = LayerMask.GetMask("Player");
+            if ( Physics.Raycast(ray, DistanceDetection) )
             {
                 TurretLook(_directionToPlayer);
-                // Ray ray = new(transform.position, transform.forward * DistanceDetection);
-                if (Physics.Raycast(ray, out _hit, DistanceDetection, mask))
+                rayFromMark = new(transform.position, transform.forward * DistanceDetection);
+                if ( Physics.Raycast(rayFromMark, out _hit, DistanceDetection) && _hit.collider.gameObject.CompareTag("Player") )
                 {
-                    ShowLaser(RayOriginMark, _upperBeam);
-                    ShowLaser(RayOriginMark2, _bottomBeam);
+                    ShowLaser(_upperBeamMark);
+                    ShowLaser(_bottomBeamMark);
+
                     _health.value -= 0.005f;
                     DealDamage(_player);
-                } //else{DestructLaser();}
+                    Debug.DrawRay(transform.position, transform.forward * DistanceDetection, Color.green);
+                }else
+                { HideLaser(_upperBeamMark); HideLaser(_bottomBeamMark); }
             }
-            else
-            {
-                _bottomBeam.SetActive(false);
-                _upperBeam.SetActive(false);
-            }
-
             Debug.DrawRay(transform.position, _directionToPlayer.normalized * DistanceDetection, Color.black);
-            Debug.DrawRay(RayOriginMark.transform.position, transform.forward * DistanceDetection, Color.yellow);
+            Debug.DrawRay(_upperBeamMark.transform.position, transform.forward * DistanceDetection, Color.yellow);
         }
 
         private void TurretLook(Vector3 direction)
         {
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.DORotateQuaternion(lookRotation, 1f);
-            // transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, TurretRotationSpeed); //* Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, TurretRotationSpeed * Time.deltaTime);
         }
 
-        private void ShowLaser(GameObject RayOriginMark1, GameObject beam)
+        private void ShowLaser(GameObject beamMark)
         {
-            LineRenderer gunBeam = beam.GetComponent<LineRenderer>();
+            LineRenderer gunBeam = beamMark.GetComponent<LineRenderer>();
 
             gunBeam.material = RayMaterial;
 
@@ -82,16 +64,20 @@ namespace Enemies
 
             gunBeam.useWorldSpace = true;
         
-            gunBeam.SetPosition(0, RayOriginMark1.transform.position);
+            gunBeam.SetPosition(0, beamMark.transform.position);
             gunBeam.SetPosition(1, _hit.point);
 
-            beam.SetActive(true);
+            beamMark.SetActive(true);
         }
-
-        private void DestructLaser()
-        {
-            //BeamGameObject.GetComponent<LineRenderer>().SetPosition(0, Vector3.zero);
-            //BeamGameObject.GetComponent<LineRenderer>().SetPosition(1, Vector3.zero);
-        }
+        void HideLaser(GameObject beamMark)
+        { beamMark.SetActive(false); }
     }
 }
+/*
+private void DestructLaser()
+{
+    BeamGameObject.GetComponent<LineRenderer>().SetPosition(0, Vector3.zero);
+    BeamGameObject.GetComponent<LineRenderer>().SetPosition(1, Vector3.zero);
+}
+transform.DORotateQuaternion(lookRotation, TurretRotationSpeed * Time.deltaTime);
+*/

@@ -2,23 +2,26 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class PlayerMovement : MonoBehaviour
 {
+    Animator PlayerAnimator;
     Rigidbody ThisRb;
     public float PlayerSpeed = 5f;
     public float MaxRayDistance = 1f;
     public Vector3 IfJumpedRayPositionOffset;
     private Vector3 CharacterMoveDirection;
-    [Header("CollisionSystem")]
-    public float RayLenght = 1f;
-    public float ForceCollision = 5f;
-    RaycastHit Hit;
-    public Vector3 CollisionRayOrigin;
+
+    float HorizontalAxis;
+    float VerticalAxis;
+    Ray[] DistanceToCollisionRays;
     [Header("Sounds")]
     AudioSource FootSteps;
     private float FootStepTimer = 20f;
     public float FootStepsStep = 20f;
-    [Header("Animator")]
-    Animator PlayerAnimator;
-    private void Awake()
+    [Header("CollisionSystem")]
+    public Vector3 CollisionRayOrigin;
+    public float RayLenght = 1f;
+    public float ForceCollision = 5f;
+    RaycastHit Hit;
+    private void Start()
     {
         FootSteps = GetComponent<AudioSource>();
         ThisRb = GetComponent<Rigidbody>();
@@ -26,87 +29,86 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-        float HorizontalAxis = Input.GetAxisRaw("Horizontal");
-        float VerticalAxis = Input.GetAxisRaw("Vertical");
+        HorizontalAxis = Input.GetAxisRaw("Horizontal");
+        VerticalAxis = Input.GetAxisRaw("Vertical");
 
-        // �������� �� IsJumped.
+        // IsJumped detection.
         if (Physics.Raycast(transform.position + IfJumpedRayPositionOffset, Vector3.down, MaxRayDistance))
         {
             CharacterMoveDirection = new(HorizontalAxis, 0, VerticalAxis);
-            Ray[] DistanceToCollisionRays = new Ray[4];
+            DistanceToCollisionRays = new Ray[1];
             for (int i = 0; i < 1; i++)
             {
                 DistanceToCollisionRays[i] = new(transform.position + CollisionRayOrigin, RayLenght * CharacterMoveDirection);
-                // 
+                Debug.DrawRay(transform.position + CollisionRayOrigin, RayLenght * CharacterMoveDirection, Color.black);
                 if (!Physics.Raycast(DistanceToCollisionRays[i], RayLenght))
                 {
                     if (!Input.GetButtonDown("Fire3") && Dash.Counter > 1000)
                     {
-                        // �������������� ��������.
+                        // Almose physical movement.
                         ThisRb.velocity = PlayerSpeed * Time.deltaTime * CharacterMoveDirection.normalized;
                     }
-                    // FootStep sound.
-                    if (FootStepTimer > FootStepsStep)
-                    {
-                        FootStepTimer = FootStepsStep;
-                    }
-                    else
-                    {
-                        FootStepTimer += 1 / Time.deltaTime;
-                    }
-                    if (CharacterMoveDirection != Vector3.zero && FootSteps.isPlaying == false && FootStepTimer == FootStepsStep) 
-                    {
-                        FootSteps.Play();
-                        FootStepTimer = 0;
-                    }
-                    else if (CharacterMoveDirection == Vector3.zero)
-                    {
-                        FootSteps.Stop();
-                    }
-                    // Animation.
-                    if (ThisRb.velocity.sqrMagnitude != 0 && Dash.Counter > 1000)
-                    {
-                        /*
-                        PlayerAnimator.SetBool("IsRunning", true);
-                        PlayerAnimator.SetBool("IsIdle", false);
-                        PlayerAnimator.SetBool("IsJumping", false);
-                        PlayerAnimator.SetBool("IsDash", false);
-                        */
-                    }
-                    else if (ThisRb.velocity.sqrMagnitude == 0)
-                    { 
-                        /*
-                        PlayerAnimator.SetBool("IsIdle", true);
-                        PlayerAnimator.SetBool("IsRunning", false);
-                        PlayerAnimator.SetBool("IsJumping", false);
-                        PlayerAnimator.SetBool("IsDash", false);
-                        */
-                    }
-                    else if(Dash.Counter <= 1000)
-                    {
-                        /*
-                        PlayerAnimator.SetBool("IsDash", true);
-                        PlayerAnimator.SetBool("IsIdle", false);
-                        PlayerAnimator.SetBool("IsRunning", false);
-                        PlayerAnimator.SetBool("IsJumping", false);
-                        */
-                    }
+                    FootStepsSounds();
+                    Animations();
                 }
             }
-            // ��� �������� ������������ �� ������.
+            // IsJumpedRay.
             Debug.DrawRay(transform.position + IfJumpedRayPositionOffset, Vector3.down * MaxRayDistance, Color.red);
         }else
         {
-            /*
             // Animation.
             PlayerAnimator.SetBool("IsJumping", true);
             PlayerAnimator.SetBool("IsIdle", false);
             PlayerAnimator.SetBool("IsRunning", false);
             PlayerAnimator.SetBool("IsDash", false);
-            */
         }
-        // ����������� �������� ������������.
-        Debug.DrawRay(transform.position + Vector3.up, transform.right, Color.yellow);
+        // Player move direction.
+        Debug.DrawRay(transform.position + Vector3.up, transform.forward, Color.yellow);
+    }
+    void FootStepsSounds()
+    {
+        // FootStep sound.
+        if (FootStepTimer > FootStepsStep)
+        {
+            FootStepTimer = FootStepsStep;
+        }
+        else
+        {
+            FootStepTimer += 1 / Time.deltaTime;
+        }
+        if (CharacterMoveDirection != Vector3.zero && FootSteps.isPlaying == false && FootStepTimer == FootStepsStep)
+        {
+            FootSteps.Play();
+            FootStepTimer = 0;
+        }
+        else if (CharacterMoveDirection == Vector3.zero)
+        {
+            FootSteps.Stop();
+        }
+    }
+    void Animations()
+    {
+        if (ThisRb.velocity.sqrMagnitude != 0 && Dash.Counter > 1000)
+        {
+            PlayerAnimator.SetBool("IsRunning", true);
+            PlayerAnimator.SetBool("IsIdle", false);
+            PlayerAnimator.SetBool("IsJumping", false);
+            PlayerAnimator.SetBool("IsDash", false);
+        }
+        else if (ThisRb.velocity.sqrMagnitude == 0)
+        {
+            PlayerAnimator.SetBool("IsIdle", true);
+            PlayerAnimator.SetBool("IsRunning", false);
+            PlayerAnimator.SetBool("IsJumping", false);
+            PlayerAnimator.SetBool("IsDash", false);
+        }
+        else if (Dash.Counter <= 1000)
+        {
+            PlayerAnimator.SetBool("IsDash", true);
+            PlayerAnimator.SetBool("IsIdle", false);
+            PlayerAnimator.SetBool("IsRunning", false);
+            PlayerAnimator.SetBool("IsJumping", false);
+        }
     }
 }
 

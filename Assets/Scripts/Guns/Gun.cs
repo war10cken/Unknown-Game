@@ -54,10 +54,7 @@ namespace Guns
 
         protected Selectable GrabItem()
         {
-            Ray = _currentItem is null
-                      ? Camera.main.ScreenPointToRay(Input.mousePosition)
-                      : new Ray(transform.position, _currentItem.transform.position);
-
+            Ray = _currentItem is null ? Camera.main.ScreenPointToRay(Input.mousePosition) : new Ray(transform.position, _currentItem.transform.position);          
             _leftMouseClick = Input.GetAxisRaw("Fire1");
             _vertical = Input.GetAxisRaw("Vertical");
             _horizontal = Input.GetAxisRaw("Horizontal");
